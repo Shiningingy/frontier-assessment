@@ -1,0 +1,5 @@
+# Normalize line endings; keep HTML fixtures and binary outputs intact.
+* text=auto eol=lf
+*.html -text
+*.xlsx binary
+*.db binary

@@ -1,0 +1,73 @@
+{
+  "site": "safcodental.com",
+  "template": "catalog-listing",
+  "cardinality": "many",
+  "match": {
+    "url_glob": "/catalog/*",
+    "signals": [
+      "jsonld:ItemList",
+      "jsonld:Product"
+    ]
+  },
+  "fields": {
+    "name": {
+      "source": "jsonld",
+      "path": "Product.name"
+    },
+    "sku": {
+      "source": "jsonld",
+      "path": "Product.sku"
+    },
+    "brand": {
+      "source": "jsonld",
+      "path": "Product.brand.name"
+    },
+    "price": {
+      "source": "jsonld",
+      "path": "Product.offers.price"
+    },
+    "currency": {
+      "source": "jsonld",
+      "path": "Product.offers.priceCurrency"
+    },
+    "availability": {
+      "source": "jsonld",
+      "path": "Product.offers.availability"
+    },
+    "image_urls": {
+      "source": "jsonld",
+      "path": "Product.image"
+    },
+    "description": {
+      "source": "jsonld",
+      "path": "Product.description"
+    },
+    "category": {
+      "source": "jsonld",
+      "path": "Product.category"
+    },
+    "product_url": {
+      "source": "jsonld",
+      "path": "Product.offers.url"
+    },
+    "rating": {
+      "source": "jsonld",
+      "path": "Product.aggregateRating.ratingValue"
+    }
+  },
+  "template_signature": "a0f4ce0062fe14fd",
+  "last_validated": "2026-06-26T21:14:05.896773+00:00",
+  "ttl_hours": 168,
+  "field_confidence": {
+    "name": 1.0,
+    "sku": 1.0,
+    "brand": 0.95,
+    "price": 1.0,
+    "availability": 1.0,
+    "image_urls": 1.0,
+    "description": 0.7,
+    "category": 0.9
+  },
+  "version": 1,
+  "authored_by": "hand"
+}

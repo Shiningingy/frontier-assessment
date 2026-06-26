@@ -1,0 +1,78 @@
+{
+  "site": "safcodental.com",
+  "template": "product-detail",
+  "cardinality": "one",
+  "match": {
+    "url_glob": "/product/*",
+    "signals": [
+      "jsonld:Product"
+    ]
+  },
+  "fields": {
+    "name": {
+      "source": "jsonld",
+      "path": "Product.name"
+    },
+    "sku": {
+      "source": "jsonld",
+      "path": "Product.sku"
+    },
+    "brand": {
+      "source": "jsonld",
+      "path": "Product.brand.name"
+    },
+    "price": {
+      "source": "jsonld",
+      "path": "Product.offers.price"
+    },
+    "currency": {
+      "source": "jsonld",
+      "path": "Product.offers.priceCurrency"
+    },
+    "availability": {
+      "source": "jsonld",
+      "path": "Product.offers.availability"
+    },
+    "image_urls": {
+      "source": "jsonld",
+      "path": "Product.image"
+    },
+    "description": {
+      "source": "jsonld",
+      "path": "Product.description"
+    },
+    "product_url": {
+      "source": "jsonld",
+      "path": "Product.url"
+    },
+    "specifications": {
+      "source": "css",
+      "selector": "li",
+      "label": "strong",
+      "require_colon": true,
+      "_note": "Spec rows render as <li><strong>Label:</strong> value</li>; require_colon filters out benefit bullets."
+    },
+    "alternatives": {
+      "source": "css",
+      "selector": "a.product-item-link",
+      "fields": {
+        "name": "@text",
+        "url": "@href"
+      }
+    }
+  },
+  "template_signature": "ae6e741e0d451877",
+  "last_validated": "2026-06-26T21:14:08.114670+00:00",
+  "ttl_hours": 168,
+  "field_confidence": {
+    "name": 1.0,
+    "sku": 1.0,
+    "brand": 0.95,
+    "price": 1.0,
+    "availability": 1.0,
+    "specifications": 0.6,
+    "alternatives": 0.5
+  },
+  "version": 1,
+  "authored_by": "hand"
+}

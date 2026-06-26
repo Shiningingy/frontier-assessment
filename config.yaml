@@ -1,0 +1,64 @@
+# Config-driven execution. Everything the crawl needs lives here so no code
+# changes are required to point the system at new categories or tune behaviour.
+
+site: "https://www.safcodental.com"
+
+# Seed categories to crawl. The navigator discovers products (and subcategories)
+# from each of these via the catalog-listing profile.
+seeds:
+  - name: "Dental Exam Gloves"
+    url: "https://www.safcodental.com/catalog/gloves"
+  - name: "Sutures & surgical products"
+    url: "https://www.safcodental.com/catalog/sutures-surgical-products"
+
+crawl:
+  # Visit each product's detail page for the richer fields (specs, variants,
+  # alternatives). When false, only the data on the listing page is captured.
+  follow_product_pages: true
+  # Cap detail-page fetches per run (POC politeness / time-box). null = no cap.
+  max_products: null
+  # Also descend into discovered subcategories (off by default for the 2-category POC).
+  follow_subcategories: false
+
+fetcher:
+  backend: "httpx"          # httpx | playwright
+  user_agent: "SafcoScraperPOC/0.1 (+contact: ai-team@frontierdental.example)"
+  timeout_seconds: 30
+  respect_robots: true
+
+rate_limit:
+  max_concurrency: 4        # simultaneous in-flight requests
+  per_request_delay_seconds: 0.75
+  jitter_seconds: 0.5       # random 0..jitter added to each delay
+
+retry:
+  max_attempts: 4
+  backoff_base_seconds: 1.0
+  backoff_max_seconds: 20.0
+
+extraction:
+  # Below this per-record field-coverage ratio, the deterministic profile is
+  # considered to have failed -> re-enter the profile-author workflow (LLM).
+  min_coverage: 0.55
+  # Fraction of pages to re-probe cheaper tiers even on a cache hit (drift detection).
+  revalidation_sample_rate: 0.05
+  profile_ttl_hours: 168    # 7 days; older profiles are revalidated
+
+storage:
+  db_path: "data/runtime/safco.db"
+
+output:
+  dir: "data"
+  formats: ["json", "csv", "xlsx"]
+
+llm:
+  # null = no LLM (deterministic only, runs with no key).
+  # anthropic = use ANTHROPIC_API_KEY. claude_cli = shell `claude -p` (uses Max login).
+  backend: "null"           # null | anthropic | claude_cli
+  classify_model: "claude-haiku-4-5"
+  extract_model: "claude-sonnet-4-6"
+
+logging:
+  level: "INFO"
+  json: true
+  dir: "logs"

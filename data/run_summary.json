@@ -1,0 +1,29 @@
+{
+  "started_at": "2026-06-26T21:42:20.530181+00:00",
+  "finished_at": "2026-06-26T21:43:10.188894+00:00",
+  "pages_fetched": 32,
+  "categories_done": 2,
+  "products_found": 30,
+  "products_stored": 30,
+  "avg_coverage": 0.892,
+  "validation_failures": 0,
+  "low_coverage_records": 0,
+  "signature_drifts": 0,
+  "cache_hits": 32,
+  "cache_misses": 0,
+  "llm_invocations": 0,
+  "dead_letters": 0,
+  "field_coverage": {
+    "name": 1.0,
+    "sku": 1.0,
+    "brand": 1.0,
+    "price": 1.0,
+    "availability": 1.0,
+    "description": 1.0,
+    "image_urls": 1.0,
+    "category_path": 1.0,
+    "specifications": 0.033,
+    "rating": 0.367,
+    "alternatives": 0.0
+  }
+}
