@@ -27,10 +27,13 @@ crawl:
 
 # Catalog source. `html` = crawl the rendered listing pages (shows ~15 curated items
 # per Safco category). `algolia` = use the site's own public Algolia search API (the
-# complete catalog with true counts: ~495 gloves + ~415 sutures). Credentials are
-# auto-discovered from a category page; override here only if needed.
+# complete displayed catalog: Gloves 100 + Sutures 56 = 156 catalog-visible products).
+# Credentials are auto-discovered from a category page; override here only if needed.
+# NOTE: this `backend` is the DEFAULT. A cached per-domain recipe
+# (profiles/<domain>/_source.json) overrides it — Safco ships one ({backend: algolia}),
+# so `safco crawl` returns the complete 156 automatically. `--source` pins an explicit choice.
 source:
-  backend: "html" # html | algolia
+  backend: "html" # html | algolia (default; per-domain recipe can override)
   algolia:
     category_root: "Dental Supplies" # hierarchical facet root
     category_level: 1 # categories.level1

@@ -108,8 +108,12 @@ class Orchestrator:
         if fresh:
             self.store.reset_frontier()
         # Runtime seeds (e.g. from the conductor / any-site chat) override config seeds.
-        for seed in (seeds if seeds is not None else self.settings.seeds):
+        effective_seeds = list(seeds if seeds is not None else self.settings.seeds)
+        for seed in effective_seeds:
             self.store.enqueue(seed.url, "category", seed.name)
+
+        # Per-domain source memory: use the strategy we've learned for this site.
+        self._apply_source_recipe(effective_seeds)
 
         if self.settings.source_backend == "algolia":
             await self._process_categories_algolia()
@@ -121,6 +125,26 @@ class Orchestrator:
         self._export()
         log_event(self.logger, "run.summary", **self.metrics.summary())
         return self.metrics
+
+    def _apply_source_recipe(self, seeds: list) -> None:
+        """Per-domain source memory: a cached recipe (profiles/<domain>/_source.json)
+        overrides the config default source — UNLESS the caller pinned an explicit
+        source (e.g. `crawl --source html`). Single-site runs are the norm, so the
+        first seed-domain with a recipe wins; multi-domain-per-run resolution is a
+        future per-row refinement (ROADMAP). This is why the system, having learned
+        that Safco's complete catalog lives behind Algolia, uses it automatically."""
+        if self.settings.section("source").get("pinned"):
+            return
+        for domain in dict.fromkeys(domain_of(s.url) for s in seeds):  # ordered, unique
+            recipe = self.profiles.get_source_recipe(domain)
+            if recipe and recipe.get("backend"):
+                src = self.settings.raw.setdefault("source", {})
+                src["backend"] = recipe["backend"]
+                if recipe.get("algolia"):
+                    src["algolia"] = {**src.get("algolia", {}), **recipe["algolia"]}
+                log_event(self.logger, "source.recipe_applied", domain=domain,
+                          backend=recipe["backend"], note=recipe.get("note"))
+                return
 
     # Markers of an anti-bot / access-denied response (Cloudflare et al.).
     _BLOCK_STATUSES = {401, 403, 429}

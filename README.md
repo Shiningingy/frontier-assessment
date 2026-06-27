@@ -22,21 +22,26 @@ catalog Q&A).
 ### Completeness & the complete catalog (honest note)
 
 Safco's category pages show only ~15 curated items; the real catalog loads client-side from the
-site's own **Algolia** API. Two things address this:
+site's own **Algolia** API. Three things address this:
 - a **completeness-critic** (`safco check-completeness <url>`) that autonomously detects "we got
   15 of 100" by reading the page's true total — no hardcoded knowledge;
-- a **complete-catalog source** (`source.backend: algolia` in config) — a transparently
-  hand-authored "recipe" using the site's public search API → the full displayed catalog
-  (**Gloves 100 + Sutures 56 = 156 products with variants**).
+- a **complete-catalog source** using the site's public search API → the full displayed catalog
+  (**Gloves 100 + Sutures 56 = 156 products with variants**);
+- **per-domain source memory**: the learned strategy is cached (`profiles/safcodental.com/_source.json`),
+  so `safco crawl` — and *"crawl gloves from safco"* in chat — **automatically** use Algolia and return
+  the complete 156. The system *remembers*; `--source html` forces the static 15-per-category sample.
 
 The Algolia recipe is presented honestly as *what the autonomous workflow should discover* (see the
 observe-and-replay prototype `tools/browser_probe.py` and [ROADMAP.md](ROADMAP.md)), not as a claim
 of full autonomy.
 
 ```
-$ safco crawl
-... 32 pages fetched, 30 products, avg field-coverage 0.89, 0 failures, 0 dead-letters
-Stored 30 products -> data/ (json/csv/xlsx) + data/runtime/safco.db
+$ safco crawl                  # remembers safcodental.com -> Algolia: the complete catalog
+... source.recipe_applied (safcodental.com -> algolia)
+Stored 156 products (Gloves 100 + Sutures 56) -> data/ (json/csv/xlsx) + data/runtime/safco.db
+
+$ safco crawl --source html    # explicit static-only sample (no API), 15 per category
+Stored 30 products -> data/ ...
 ```
 
 ---
@@ -110,25 +115,29 @@ re-running it; the reporter answers only from DB rows.
 Requires Python 3.10+.
 
 ```bash
-# 1. Install (deterministic core only — no key needed)
+# 1. Install (no key needed)
 pip install -e .
 
-# 2. Crawl the two seed categories -> SQLite + JSON/CSV/XLSX + run summary
-safco crawl                      # use --fresh to reset the frontier and re-crawl
+# 2. Crawl the two seed categories -> SQLite + JSON/CSV/XLSX + run summary.
+#    Safco's learned source recipe is shipped, so this returns the COMPLETE catalog
+#    (156 = Gloves 100 + Sutures 56) automatically — no key, no config edit.
+safco crawl                      # add --fresh to reset the frontier and re-crawl
+safco crawl --source html        # explicit static-only sample (15/category, 30 total)
 
 # 3. Inspect
 safco stats                      # catalog counts + last run summary
 cat data/products.json           # the normalized catalog
 ```
 
-**Complete catalog (both target categories, no LLM key needed)** — use the site's own
-search API instead of the 15-item static sample:
+The complete catalog comes from the site's own search API; the **completeness-critic**
+proves it's complete (and detects when a static crawl is short):
 
 ```bash
-# config.yaml: source.backend = algolia
-safco crawl --fresh              # -> 156 products (Gloves 100 + Sutures 56) with variants
-safco check-completeness https://www.safcodental.com/catalog/gloves   # "15 of 100" critic (uses the browser tier)
+safco check-completeness https://www.safcodental.com/catalog/gloves   # "15 of 100" critic (browser tier)
 ```
+
+> Note: the **committed** `data/products.*` is the 30-product `--source html` sample; the
+> default crawl now produces the 156 (mirrored in `data/safco_full/`). See §5.
 
 Optional **AI tiers** — enable one backend in `config.yaml` (`llm.backend`):
 
@@ -170,11 +179,13 @@ fetcher/LLM backend, output formats, coverage thresholds.
 
 **The deliverable sample is [`data/safco_full/`](data/safco_full/)** — the *complete* catalog
 for the two target categories **together** (Gloves 100 + Sutures 56 = **156 products** with variant
-SKUs + descriptions), in JSON/CSV/XLSX. See [`data/README.md`](data/README.md) for what each file is.
+SKUs + descriptions), in JSON/CSV/XLSX. This is also what the **default** `safco crawl` now produces,
+because the learned source recipe is shipped. See [`data/README.md`](data/README.md) for each file.
 
-> Note: the `data/products.*` files at the `data/` root are a **side-product of the deterministic
-> no-key demo** (`safco crawl` → only the 15-item curated sample each category shows in static HTML),
-> kept to demonstrate the zero-setup path — **not** the final output.
+> Note: the `data/products.*` files at the `data/` root are the **static-only sample**
+> (`safco crawl --source html` → the 15-item curated set each category shows in static HTML, 30 total),
+> kept to demonstrate the zero-API path. They are committed at 30; running the default crawl
+> overwrites them with the complete 156 (= `data/safco_full/`).
 
 One record (shape; the deterministic demo run shown):
 
@@ -199,12 +210,13 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
 - **Completeness — solved for the target; autonomous discovery is a prototype.** Safco shows
   only ~15 curated items per category in static HTML (real pagination is client-side JS). We
   obtain the **complete** catalog — Gloves **100** + Sutures **56** = **156 products with
-  variants** — via the site's own Algolia API (`source.backend: algolia`, see
-  [`data/safco_full/`](data/safco_full/)), and the **completeness-critic** autonomously detects
-  when a deterministic crawl is short ("15 of 100"). *The remaining limitation:* that Algolia
-  source is a **hand-authored recipe** for the known target; the fully-autonomous version
-  (browser observe-and-replay, `tools/browser_probe.py`) is a working **prototype**, not yet a
-  productionized generic path (see [ROADMAP.md](ROADMAP.md)). Param-agnostic next-page detection
+  variants** ([`data/safco_full/`](data/safco_full/)) — via the site's own Algolia API, applied
+  **automatically** by the per-domain source recipe (`profiles/safcodental.com/_source.json`), and
+  the **completeness-critic** autonomously detects when a static crawl is short ("15 of 100").
+  *The remaining limitation:* that recipe was **hand-learned** for the known target; the
+  fully-autonomous version that *writes* the recipe for an unseen site (browser observe-and-replay,
+  `tools/browser_probe.py`) is a working **prototype**, not yet a productionized generic path
+  (see [ROADMAP.md](ROADMAP.md)). Param-agnostic next-page detection
   (`rel=next`, `?p=`/`?page=`/`?x=`/…, path-based) is implemented and demonstrated live on
   books.toscrape (60 products across pages 1→3).
 - **Specifications** appear in static HTML on only a few product pages (≈1 in the
@@ -301,7 +313,7 @@ docs/  config.yaml  Dockerfile  scripts/render_presentation.py
 ## Tests
 
 ```bash
-pip install -e .[dev] && pytest        # 30 offline tests, no network/LLM needed
+pip install -e .[dev] && pytest        # 36 offline tests, no network/LLM needed
 ```
 
 They exercise extraction (JSON-LD + CSS) on captured Safco HTML, normalization/coverage,

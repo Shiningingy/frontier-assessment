@@ -92,6 +92,18 @@ The same Python tools (`fetch`, `extract_with_profile`, `validate`, `store`,
                      validate → coverage gate → store
 ```
 
+## Source selection & per-domain memory
+
+A second cache sits *above* extraction: the **per-domain source recipe**
+(`profiles/<domain>/_source.json`), resolved before the config default
+(`orchestrator._apply_source_recipe`). It records *which source a whole site uses* —
+static HTML vs. the site's own data API. Safco's shipped recipe (`{backend: algolia}`)
+means `safco crawl` returns the **complete** catalog automatically (the system *remembers*
+that the full data lives behind Algolia); `--source` pins an explicit choice. How a recipe
+is *earned* — completeness-critic finds "15 of 100" → `browser_probe` observes the page's
+real API → cache the recipe — is the autonomous loop (prototype + ROADMAP Phase 1.5). This is
+the *which-source* axis; the ladder above is the *how-to-extract-a-page* axis.
+
 ## Agents and responsibilities
 
 | Agent | Responsibility | Built |

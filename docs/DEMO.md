@@ -4,21 +4,27 @@ Real, reproducible runs of the system. Transcripts below are actual output; the
 screenshot slots are for you to fill once you run the UI locally (see the capture
 guide at the bottom).
 
-## 1. Deterministic crawl (no API key) — Safco, 2 categories
+## 1. Default crawl (no key) — Safco, complete catalog via remembered recipe
 
-The zero-setup path. Reads the static JSON-LD, which only exposes the ~15 curated items per
-category (this is the *side-product*, not the final catalog — see §2).
+`safco crawl` returns the **complete** catalog out of the box: the system has *learned* that
+Safco's full data lives behind Algolia and cached that per-domain source recipe
+(`profiles/safcodental.com/_source.json`), so it uses it automatically — no key, no config edit.
 
 ```text
 $ safco crawl --fresh
-... 32 pages fetched, 30 products, 0 dead-letters, avg field-coverage 0.89
-Stored 30 products -> data/ (json/csv/xlsx) + data/runtime/safco.db
+... source.recipe_applied (safcodental.com -> algolia)
+stored: 156 | by category: {Dental Exam Gloves: 100, Sutures & surgical products: 56}
+coverage: name 100% sku 100% brand 99% price 100% description 100% variants 100%
+-> data/ (json/csv/xlsx) + data/runtime/safco.db   # complete set also in data/safco_full/
+
+$ safco crawl --fresh --source html        # explicit static-only sample (no API)
+Stored 30 products -> data/ ...             # the 15-item curated set per category (committed at data/products.*)
 ```
 
-## 2. Complete catalog + completeness-critic — Safco (the deliverable)
+## 2. How it knew — the completeness-critic
 
-The completeness-critic autonomously notices the deterministic crawl is short — by reading the
-page's own true total via the browser tier — with no hardcoded knowledge:
+The recipe wasn't hardcoded; the **completeness-critic** earns it by noticing a static crawl is
+short — reading the page's own true total via the browser tier, no hardcoded knowledge:
 
 ```text
 $ safco check-completeness https://www.safcodental.com/catalog/gloves
@@ -27,15 +33,8 @@ $ safco check-completeness https://www.safcodental.com/catalog/gloves
   "recommended_action": "Incomplete: captured 15 of 100. Escalate — replay the discovered API ..." }
 ```
 
-Then the complete-catalog source (the site's own Algolia API) pulls everything, with variants
-and detail-page descriptions. Output: [../data/safco_full/](../data/safco_full/).
-
-```text
-# config.yaml: source.backend = algolia ; crawl.follow_product_pages = true
-$ safco crawl --fresh
-stored: 156 | by category: {Dental Exam Gloves: 100, Sutures & surgical products: 56}
-coverage: name 100% sku 100% brand 99% price 100% description 100% variants 100%
-```
+That "15 of 100" verdict is exactly what justifies the cached Algolia recipe (and, for a brand-new
+site, drives the autonomous-discovery loop — ROADMAP Phase 1.5).
 
 ## 3. Any-site + pagination (live, ethical) — books.toscrape.com
 
@@ -73,15 +72,17 @@ $ safco stats
 
 ## 5. Grounded Q&A — conductor / reporter
 
-```text
-$ safco chat "how many products and what's the price range? use the catalog summary"
-  🔧 summary({})
-30 products across 2 categories (Gloves 15, Sutures 15). Price $8.29–$1,118.99,
-avg $93.20. All 30 in stock.
+Grounded over whatever is in the DB (here the `--source html` static sample; the default 156
+catalog answers the same way over more rows):
 
+```text
 $ safco report "which nitrile gloves are under $10? name, sku, price"
-1. Compac Nitrile — DRCDM — $8.49
-2. Halyard Black Nitrile — DRCDL — $8.29
+1. Halyard Black Nitrile — DRCDL — $8.29
+2. Compac Nitrile — DRCDM — $8.49
+
+$ safco chat "summarize the catalog by brand"
+  🔧 query_catalog({...})
+Catalog by brand: Cranberry 4, Dash 3, Ansell 3, ...  (grounded in the stored rows)
 ```
 
 ## 6. Web UI (Gradio)
@@ -94,11 +95,10 @@ $ safco report "which nitrile gloves are under $10? name, sku, price"
 
 ![The conductor — landing screen](images/ui-home.png)
 
-> **The "30" is a demo default, not a system limit.** The catalog shown here is the
-> **no-key deterministic sample** (30 products). The DB is **not capped** — set
-> `source.backend: algolia` for the *complete* catalog (156 products for these two
-> categories), and in production the same UI and DB scale to the entire site. Same chat,
-> same tools, however many products are loaded.
+> **These screenshots show the 30-product `--source html` static sample; the DB is not capped.**
+> The default `safco crawl` loads the complete **156** (the system remembers Safco → Algolia), and
+> the same chat answers over whatever is loaded — in production it scales to the entire site. Same
+> chat, same tools, however many products are loaded.
 
 ![Chat — grounded catalog Q&A](images/ui-chat.png)
 *"Which nitrile gloves are under $10?" → the conductor calls `query_catalog` and lists only

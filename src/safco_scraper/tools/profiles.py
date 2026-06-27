@@ -175,7 +175,23 @@ class ProfileStore:
         d = self.root / domain
         if not d.exists():
             return []
-        return [Profile.from_dict(json.loads(f.read_text(encoding="utf-8"))) for f in d.glob("*.json")]
+        # `_`-prefixed files (e.g. _source.json) are not extraction profiles.
+        return [Profile.from_dict(json.loads(f.read_text(encoding="utf-8")))
+                for f in d.glob("*.json") if not f.name.startswith("_")]
+
+    # --- per-domain source recipe (which SOURCE a whole site uses) ------- #
+    def get_source_recipe(self, domain: str) -> Optional[dict]:
+        """The learned source strategy for a domain (e.g. {'backend': 'algolia'})
+        from profiles/<domain>/_source.json, or None."""
+        p = self.root / domain / "_source.json"
+        if not p.exists():
+            return None
+        return json.loads(p.read_text(encoding="utf-8"))
+
+    def save_source_recipe(self, domain: str, recipe: dict) -> None:
+        d = self.root / domain
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "_source.json").write_text(json.dumps(recipe, indent=2), encoding="utf-8")
 
     def find_for_url(self, url: str) -> Optional[Profile]:
         """Best-effort match by URL glob among cached profiles for the host."""

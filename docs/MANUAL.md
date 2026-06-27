@@ -110,7 +110,7 @@ All commands accept a global `--config <path>` (default `config.yaml`).
 
 | Command | What it does | Needs LLM? |
 |---|---|---|
-| `safco crawl [--fresh] [--source html\|algolia]` | Run the full pipeline over `seeds`; store + export. `--fresh` resets the frontier; `--source algolia` pulls the **complete** catalog (156 for the two Safco categories) instead of the static 15-item sample — handy for testing chat/UI against the full data. | No |
+| `safco crawl [--fresh] [--source html\|algolia]` | Run the full pipeline over `seeds`; store + export. For Safco the learned **source recipe** is applied automatically, so the default returns the **complete** catalog (156). `--source html` forces the static 15-per-category sample (30); `--source algolia` forces the API source. `--fresh` resets the frontier. | No |
 | `safco stats` | Print catalog counts + the last `run_summary.json`. | No |
 | `safco export [--format json\|csv\|xlsx]` | Re-export the current DB (default: all configured formats). | No |
 | `safco report [question]` | Grounded Q&A over the catalog. No arg → interactive REPL (`summary`, `quit`). | Yes |
@@ -250,10 +250,12 @@ deterministic path can't see products. Try `author-profile` (LLM) or the Playwri
 ## 11. Limitations
 
 - **Completeness is solved for the target**: the complete catalog (Gloves 100 + Sutures 56 =
-  156 products with variants + descriptions) is obtained via `source.backend: algolia`, and the
-  completeness-critic flags a short deterministic crawl. The *remaining* limitation: that Algolia
-  source is a hand-authored recipe; the fully-autonomous discovery (`tools/browser_probe.py`) is a
-  prototype, not yet productionized (roadmap).
+  156 products with variants + descriptions) comes from the site's Algolia API, applied
+  **automatically** by the per-domain source recipe (`profiles/safcodental.com/_source.json`), so
+  `safco crawl` returns 156 by default; the completeness-critic flags a short static crawl. The
+  *remaining* limitation: that recipe was **hand-learned**; the fully-autonomous discovery that
+  *writes* it for an unseen site (`tools/browser_probe.py`) is a prototype, not yet productionized
+  (roadmap).
 - `specifications` appear on only a few product pages; `alternatives`/`pack_size` are JS-rendered /
   not in the source — partial, and the motivating cases for the LLM-fallback / Playwright tiers.
 - Safco's pagination is client-side JS (static pages show ~15); param-agnostic pagination is

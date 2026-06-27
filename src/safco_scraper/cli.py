@@ -50,6 +50,7 @@ async def _run_crawl(args) -> int:
     # is the manual stand-in until per-domain source memory makes it automatic (ROADMAP).
     if getattr(args, "source", None):
         settings.raw.setdefault("source", {})["backend"] = args.source
+        settings.raw["source"]["pinned"] = True  # explicit choice overrides per-domain recipe
     logger = _logger_from(settings)
     fetcher = build_fetcher(settings, logger)
     llm = _build_llm_extractor(settings, logger)

@@ -1,0 +1,8 @@
+{
+  "backend": "algolia",
+  "algolia": {
+    "category_root": "Dental Supplies"
+  },
+  "learned_at": "2026-06-27",
+  "note": "Static HTML serves only ~15 curated items per category; the complete catalog loads client-side from the site's own Algolia API. Learned via the completeness-critic + browser_probe (observe-and-replay). app_id / api_key / index / category_id are discovered live from the page at crawl time, so no secrets are stored here."
+}

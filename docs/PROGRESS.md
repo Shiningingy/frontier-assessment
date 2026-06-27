@@ -42,7 +42,9 @@ API-driven catalog.
 ## Honest framing (how to present this)
 
 - The **Algolia source is an expert-authored recipe** for the known target — hand-built (with the
-  AI agents) for this 24h POC. That's transparent, not hidden.
+  AI agents) for this 24h POC. That's transparent, not hidden. It's now **cached per-domain**
+  (`profiles/safcodental.com/_source.json`) and resolved before the config default, so the system
+  *remembers* and `safco crawl` returns the complete 156 automatically (`--source html` = static 30).
 - The **workflow** is what generalizes: agents discover + cache such recipes; the completeness-critic
   guarantees we never silently ship partial data; the **browser/MCP "vision" tier** is the proposed
   general (slower/costlier) solver. As agents meet more sites, coverage trends toward "any site that
@@ -58,5 +60,5 @@ because there are many agents. At scale the path is to grow the conductor into a
 
 ## Status
 
-30 tests passing. Deliverables: README + docs (ARCHITECTURE/SCHEMA/PROFILES/MANUAL/DEMO/PROGRESS),
+36 tests passing. Deliverables: README + docs (ARCHITECTURE/SCHEMA/PROFILES/MANUAL/DEMO/PROGRESS),
 ROADMAP, sample datasets (Safco + books_demo), and `Frontier_Dental_POC_Presentation.pdf`.
