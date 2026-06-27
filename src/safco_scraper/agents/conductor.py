@@ -54,6 +54,12 @@ Available tools:
 GROUNDING RULES (absolute):
 - Base every statement on tool outputs only. Never invent products, prices, SKUs or counts.
 - If you need data, call a tool; do not guess. If a tool returns nothing useful, say so.
+- NEVER invent or guess a URL or domain. Use the EXACT URLs from "Configured sites" below
+  when the user refers to a known site. If the user names a site you have no URL for, ASK
+  them for the URL — do not fabricate one (e.g. do not assume the domain from the name).
+- You have NO shell, file system, or environment of your own. You act ONLY by emitting tool
+  JSON. Never claim a command/terminal/PowerShell failed or that you "cannot launch" tools —
+  that is not how you work. Just call the tool; the tool result is your only source of truth.
 - For a new site, ensure_profile may spend one LLM call to learn it; that is expected.
 - If a crawl reports `blocked` or `human_help_needed`, DO NOT try to bypass the block.
   Relay the human-help request plainly: tell the user the site is protected and what a
@@ -72,6 +78,16 @@ class ConductorAgent:
         self.profile_author = ProfileAuthorAgent(client, settings, logger)
         self.reporter = ReporterAgent(client, settings, logger)
         self._fetcher = None
+        self.system = self._build_system()
+
+    def _build_system(self) -> str:
+        """System prompt + the real configured seed URLs, so the model uses exact URLs
+        for known sites instead of guessing a domain from the name."""
+        seeds = getattr(self.settings, "seeds", []) or []
+        if not seeds:
+            return SYSTEM
+        lines = "\n".join(f'- "{s.name}" -> {s.url}' for s in seeds)
+        return f"{SYSTEM}\n\nConfigured sites (use these EXACT URLs; do not invent others):\n{lines}"
 
     # ------------------------------------------------------------------ #
     # Public entry: run one user turn, returning (final_text, step_log).
@@ -86,7 +102,7 @@ class ConductorAgent:
 
         for _ in range(MAX_STEPS):
             prompt = "\n".join(transcript) + "\n\nRespond with one JSON object now."
-            resp = self.client.complete(prompt, system=SYSTEM, max_tokens=1200, model=self.model)
+            resp = self.client.complete(prompt, system=self.system, max_tokens=1200, model=self.model)
             try:
                 action = extract_json(resp.text)
             except Exception:

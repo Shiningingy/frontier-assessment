@@ -57,6 +57,16 @@ def test_conductor_dispatches_tool_then_finalizes(tmp_path):
     assert len(llm.calls) == 2  # one tool call, one finalize
 
 
+def test_conductor_injects_configured_seed_urls(tmp_path):
+    # The model must be handed the real seed URLs so it never guesses a domain.
+    from safco_scraper.config import Seed
+    settings = _settings(tmp_path)
+    settings.seeds = [Seed(name="Dental Exam Gloves", url="https://www.safcodental.com/catalog/gloves")]
+    conductor = ConductorAgent(ScriptedLLM(["{}"]), settings, logging.getLogger("t"))
+    assert "https://www.safcodental.com/catalog/gloves" in conductor.system
+    assert "do not invent" in conductor.system.lower()
+
+
 def test_conductor_handles_unknown_tool_gracefully(tmp_path):
     settings = _settings(tmp_path)
     _seed_db(settings)

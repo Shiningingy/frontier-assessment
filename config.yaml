@@ -30,22 +30,22 @@ crawl:
 # complete catalog with true counts: ~495 gloves + ~415 sutures). Credentials are
 # auto-discovered from a category page; override here only if needed.
 source:
-  backend: "html"           # html | algolia
+  backend: "html" # html | algolia
   algolia:
-    category_root: "Dental Supplies"   # hierarchical facet root
-    category_level: 1                  # categories.level1
+    category_root: "Dental Supplies" # hierarchical facet root
+    category_level: 1 # categories.level1
     # app_id / api_key / index: auto-discovered from the seed page if omitted
 
 fetcher:
-  backend: "httpx"          # httpx | playwright
+  backend: "httpx" # httpx | playwright
   user_agent: "SafcoScraperPOC/0.1 (+contact: ai-team@frontierdental.example)"
   timeout_seconds: 30
   respect_robots: true
 
 rate_limit:
-  max_concurrency: 4        # simultaneous in-flight requests
+  max_concurrency: 4 # simultaneous in-flight requests
   per_request_delay_seconds: 0.75
-  jitter_seconds: 0.5       # random 0..jitter added to each delay
+  jitter_seconds: 0.5 # random 0..jitter added to each delay
 
 retry:
   max_attempts: 4
@@ -58,7 +58,7 @@ extraction:
   min_coverage: 0.55
   # Fraction of pages to re-probe cheaper tiers even on a cache hit (drift detection).
   revalidation_sample_rate: 0.05
-  profile_ttl_hours: 168    # 7 days; older profiles are revalidated
+  profile_ttl_hours: 168 # 7 days; older profiles are revalidated
 
 storage:
   db_path: "data/runtime/safco.db"
@@ -70,7 +70,7 @@ output:
 llm:
   # null = no LLM (deterministic only, runs with no key).
   # anthropic = use ANTHROPIC_API_KEY. claude_cli = shell `claude -p` (uses Max login).
-  backend: "null"           # null | anthropic | claude_cli
+  backend: "claude_cli" # null | anthropic | claude_cli
   classify_model: "claude-haiku-4-5"
   extract_model: "claude-sonnet-4-6"
 
