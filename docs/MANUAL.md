@@ -110,7 +110,7 @@ All commands accept a global `--config <path>` (default `config.yaml`).
 
 | Command | What it does | Needs LLM? |
 |---|---|---|
-| `safco crawl [--fresh]` | Run the full pipeline over `seeds`; store + export. `--fresh` resets the frontier and re-crawls. | No (cached profile) |
+| `safco crawl [--fresh] [--source html\|algolia]` | Run the full pipeline over `seeds`; store + export. `--fresh` resets the frontier; `--source algolia` pulls the **complete** catalog (156 for the two Safco categories) instead of the static 15-item sample — handy for testing chat/UI against the full data. | No |
 | `safco stats` | Print catalog counts + the last `run_summary.json`. | No |
 | `safco export [--format json\|csv\|xlsx]` | Re-export the current DB (default: all configured formats). | No |
 | `safco report [question]` | Grounded Q&A over the catalog. No arg → interactive REPL (`summary`, `quit`). | Yes |
