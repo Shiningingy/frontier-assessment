@@ -86,14 +86,16 @@ $ safco report "which nitrile gloves are under $10? name, sku, price"
 
 ## 6. Web UI (Gradio)
 
-`safco ui` → http://127.0.0.1:7860 — a Chat tab (the conductor) and a Catalog tab
-(live product table + summary).
+`safco ui` → http://127.0.0.1:7860. Two tabs:
+- **Chat** — the conductor; type a request (e.g. *"crawl gloves from safco and show me the
+  cheapest nitrile glove"*) and it drives discover → crawl → query, then answers from the data.
+- **Catalog** — the live product table + summary; click **Refresh** to load the current DB.
 
-<!-- SCREENSHOT: chat tab -->
-> _![Chat tab](images/ui-chat.png)_ ← replace with your screenshot
-
-<!-- SCREENSHOT: catalog tab -->
-> _![Catalog tab](images/ui-catalog.png)_ ← replace with your screenshot
+> Run it locally to see it live (capture guide below). To embed screenshots, drop the files in
+> `docs/images/` and uncomment this block:
+>
+> <!-- ![Chat tab](images/ui-chat.png) -->
+> <!-- ![Catalog tab](images/ui-catalog.png) -->
 
 ---
 
