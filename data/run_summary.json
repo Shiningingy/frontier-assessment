@@ -1,7 +1,7 @@
 {
-  "started_at": "2026-06-27T02:58:32.734431+00:00",
-  "finished_at": "2026-06-27T02:59:13.467626+00:00",
-  "pages_fetched": 32,
+  "started_at": "2026-06-27T04:08:40.506645+00:00",
+  "finished_at": "2026-06-27T04:09:32.372180+00:00",
+  "pages_fetched": 33,
   "categories_done": 2,
   "products_found": 30,
   "products_stored": 30,
@@ -10,7 +10,7 @@
   "low_coverage_records": 0,
   "signature_drifts": 0,
   "cache_hits": 32,
-  "cache_misses": 0,
+  "cache_misses": 1,
   "llm_invocations": 0,
   "dead_letters": 0,
   "field_coverage": {

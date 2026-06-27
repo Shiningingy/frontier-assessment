@@ -88,6 +88,11 @@ def _run_stats(args) -> int:
     for cat, n in by_cat.items():
         print(f"  {cat}: {n}")
     print(f"Dead-letters: {len(store.dead_letters())}")
+    help_q = store.help_queue()
+    if help_q:
+        print(f"\n🙋 Human-help requests ({len(help_q)}):")
+        for h in help_q:
+            print(f"  - {h['url']}\n      {h['reason']}\n      → {h['suggested_action']}")
     summary = Path(settings.output_dir) / "run_summary.json"
     if summary.exists():
         print("\nLast run summary:")

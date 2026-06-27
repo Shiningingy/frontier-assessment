@@ -55,6 +55,17 @@ CREATE TABLE IF NOT EXISTS dead_letter (
     attempts   INTEGER,
     failed_at  TEXT
 );
+
+-- Human-in-the-loop handoff: the final escalation tier. When automation can't (or
+-- shouldn't) proceed, a clear, actionable request is queued for a human instead of
+-- evading or failing silently.
+CREATE TABLE IF NOT EXISTS manual_help (
+    url         TEXT PRIMARY KEY,
+    reason      TEXT,
+    suggested_action TEXT,
+    requested_at TEXT,
+    resolved    INTEGER DEFAULT 0
+);
 """
 
 
@@ -171,6 +182,22 @@ class Store:
 
     def dead_letters(self) -> list[dict[str, Any]]:
         return [dict(r) for r in self.conn.execute("SELECT * FROM dead_letter")]
+
+    # --- human handoff (final escalation tier) ---------------------------- #
+    def request_human_help(self, url: str, reason: str, suggested_action: str) -> None:
+        self.conn.execute(
+            "INSERT INTO manual_help (url, reason, suggested_action, requested_at, resolved) "
+            "VALUES (?, ?, ?, ?, 0) ON CONFLICT(url) DO UPDATE SET "
+            "reason=excluded.reason, suggested_action=excluded.suggested_action, requested_at=excluded.requested_at",
+            (url, reason, suggested_action, _now()),
+        )
+        self.conn.commit()
+
+    def help_queue(self, include_resolved: bool = False) -> list[dict[str, Any]]:
+        q = "SELECT * FROM manual_help"
+        if not include_resolved:
+            q += " WHERE resolved=0"
+        return [dict(r) for r in self.conn.execute(q)]
 
     def reset_frontier(self) -> None:
         self.conn.execute("DELETE FROM frontier")

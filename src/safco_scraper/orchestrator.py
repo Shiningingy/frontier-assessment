@@ -47,6 +47,8 @@ class RunMetrics:
     cache_misses: int = 0
     llm_invocations: int = 0
     dead_letters: int = 0
+    blocked: int = 0
+    manual_help_requests: int = 0
     coverage_samples: list[float] = field(default_factory=list)
     # Field coverage is computed from the final persisted catalog (post-enrichment)
     # at export time, so it reflects what was actually stored, not in-flight passes.
@@ -73,6 +75,8 @@ class RunMetrics:
             "cache_misses": self.cache_misses,
             "llm_invocations": self.llm_invocations,
             "dead_letters": self.dead_letters,
+            "blocked": self.blocked,
+            "manual_help_requests": self.manual_help_requests,
             "field_coverage": self.field_coverage,
         }
 
@@ -85,6 +89,7 @@ class Orchestrator:
         logger: logging.Logger,
         llm_extractor: Optional[Any] = None,
         profile_author: Optional[Any] = None,
+        profiles_root: str = "profiles",
     ) -> None:
         self.settings = settings
         self.fetcher = fetcher
@@ -92,7 +97,8 @@ class Orchestrator:
         self.llm_extractor = llm_extractor  # ExtractorAgent-like callable or None
         self.profile_author = profile_author  # ProfileAuthorAgent or None (auto-author on miss)
         self.store = Store(settings.db_path)
-        self.profiles = ProfileStore("profiles")
+        self.profiles = ProfileStore(profiles_root)
+        self._pages_visited = 0
         self.metrics = RunMetrics()
         self._min_cov = settings.min_coverage
         self._revalidate_rate = float(settings.section("extraction").get("revalidation_sample_rate", 0.05))
@@ -113,12 +119,21 @@ class Orchestrator:
         log_event(self.logger, "run.summary", **self.metrics.summary())
         return self.metrics
 
+    # Markers of an anti-bot / access-denied response (Cloudflare et al.).
+    _BLOCK_STATUSES = {401, 403, 429}
+    _BLOCK_MARKERS = ("just a moment", "attention required", "cf-browser-verification",
+                      "cf-chl-", "/cdn-cgi/challenge", "access denied", "enable javascript")
+
+    def _is_blocked(self, res: FetchResult) -> bool:
+        if res.status in self._BLOCK_STATUSES:
+            return True
+        head = res.html[:4000].lower()
+        return any(m in head for m in self._BLOCK_MARKERS)
+
     # ------------------------------------------------------------------ #
     async def _fetch(self, url: str) -> Optional[FetchResult]:
         try:
             res = await self.fetcher.fetch(url)
-            self.metrics.pages_fetched += 1
-            return res
         except Exception as exc:  # robots, transport, status after retries
             row = next((r for r in self.store.pending() if r["url"] == url), None)
             attempts = (row["attempts"] if row else 0) + 1
@@ -126,6 +141,31 @@ class Orchestrator:
             self.metrics.dead_letters += 1
             log_event(self.logger, "fetch.dead_letter", level=logging.ERROR, url=url, error=str(exc))
             return None
+
+        self.metrics.pages_fetched += 1
+        # Compliance: recognise an anti-bot block and STOP — do not extract from, or
+        # author a profile against, a challenge page, and never try to evade it.
+        if self._is_blocked(res):
+            self.metrics.blocked += 1
+            reason = f"blocked: HTTP {res.status} (anti-bot / access denied)"
+            self.store.dead_letter(url, reason + " — refusing to evade.", 1)
+            self.metrics.dead_letters += 1
+            # Final escalation tier: hand off to a human instead of evading.
+            self._request_help(
+                url, reason,
+                "Site is bot-protected. A human should confirm scraping is permitted "
+                "(robots/ToS), then either supply the page HTML from an authorized "
+                "browser or enable the browser tier with permission. Do NOT bypass the protection.",
+            )
+            log_event(self.logger, "fetch.blocked", level=logging.WARNING, url=url, status=res.status)
+            return None
+        return res
+
+    def _request_help(self, url: str, reason: str, action: str) -> None:
+        self.store.request_human_help(url, reason, action)
+        self.metrics.manual_help_requests += 1
+        log_event(self.logger, "handoff.request_human_help", level=logging.WARNING,
+                  url=url, reason=reason)
 
     def _profile_for(self, url: str, template: str) -> Optional[Profile]:
         # Look up by the page's OWN domain (enables multi-site), with a best-effort
@@ -147,6 +187,11 @@ class Orchestrator:
         if self.profile_author is None:
             log_event(self.logger, "profile.missing", level=logging.WARNING,
                       url=url, template=template, hint="no cached profile and LLM/profile-author disabled")
+            self._request_help(
+                url, f"no extraction profile for template '{template}' and no LLM backend",
+                f"Enable an LLM backend and run `safco author-profile {url}`, or hand-write "
+                f"profiles/<domain>/{template}.json for this template.",
+            )
             return None
         log_event(self.logger, "profile.auto_author", url=url, template=template)
         try:
@@ -155,6 +200,10 @@ class Orchestrator:
             return prof
         except Exception as exc:
             log_event(self.logger, "profile.auto_author_failed", level=logging.ERROR, url=url, error=str(exc))
+            self._request_help(
+                url, f"automatic profile authoring failed: {exc}",
+                "Inspect the page structure and hand-write or repair the extraction profile.",
+            )
             return None
 
     def _check_signature(self, profile: Profile, signature: str, url: str) -> None:
@@ -173,8 +222,17 @@ class Orchestrator:
 
     # ------------------------------------------------------------------ #
     async def _process_categories(self) -> None:
-        pending = self.store.pending("category")
-        for row in pending:
+        # Re-poll the frontier each iteration so pages enqueued by pagination
+        # (page 2 -> page 3 -> ...) are picked up within the same run.
+        while True:
+            pending = self.store.pending("category")
+            if not pending:
+                break
+            if self._page_cap_reached():
+                log_event(self.logger, "pagination.cap_reached", level=logging.WARNING,
+                          max_pages=self.settings.max_pages, remaining=len(pending))
+                break
+            row = pending[0]
             url, source_category = row["url"], row["source_category"]
             res = await self._fetch(url)
             if res is None:
@@ -203,10 +261,25 @@ class Orchestrator:
                 for suburl, name in disc.subcategory_urls:
                     self.store.enqueue(suburl, "category", name or source_category)
 
+            # Follow pagination: enqueue next-page listings (same category). Each
+            # page discovers the next, so the whole set is walked; the frontier
+            # de-dups URLs and a max_pages cap bounds runaway pagination.
+            self._pages_visited += 1
+            if self.settings.follow_pagination and not self._page_cap_reached():
+                for npage in disc.next_pages:
+                    self.store.enqueue(npage, "category", source_category)
+                if disc.next_pages:
+                    log_event(self.logger, "pagination.follow", url=url,
+                              next_pages=len(disc.next_pages))
+
             self.store.mark(url, "done")
             self.metrics.categories_done += 1
             log_event(self.logger, "category.done", url=url,
                       products=len(products), discovered=len(disc.product_urls))
+
+    def _page_cap_reached(self) -> bool:
+        cap = self.settings.max_pages
+        return cap is not None and self._pages_visited >= cap
 
     async def _process_products(self) -> None:
         pending = self.store.pending("product")

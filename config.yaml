@@ -19,6 +19,11 @@ crawl:
   max_products: null
   # Also descend into discovered subcategories (off by default for the 2-category POC).
   follow_subcategories: false
+  # Follow pagination links (?p=N / rel=next) within a category listing.
+  follow_pagination: true
+  # Safety cap on listing pages visited per crawl (null = unbounded). Bounds runaway
+  # pagination on large sites.
+  max_pages: 50
 
 fetcher:
   backend: "httpx"          # httpx | playwright

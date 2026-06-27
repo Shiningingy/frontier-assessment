@@ -41,6 +41,14 @@ class Settings:
         return bool(self.section("crawl").get("follow_subcategories", False))
 
     @property
+    def follow_pagination(self) -> bool:
+        return bool(self.section("crawl").get("follow_pagination", True))
+
+    @property
+    def max_pages(self) -> Optional[int]:
+        return self.section("crawl").get("max_pages")
+
+    @property
     def max_products(self) -> Optional[int]:
         return self.section("crawl").get("max_products")
 

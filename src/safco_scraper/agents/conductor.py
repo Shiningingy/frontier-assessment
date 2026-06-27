@@ -49,11 +49,15 @@ Available tools:
 - summary {}                  -> deterministic catalog summary (counts, price range, brands).
 - export {"format": "json|csv|xlsx"} -> write the catalog to a file.
 - list_catalog_sites {}       -> what categories/sites are already stored.
+- list_help_requests {}       -> pending human-handoff requests (e.g. a site was blocked).
 
 GROUNDING RULES (absolute):
 - Base every statement on tool outputs only. Never invent products, prices, SKUs or counts.
 - If you need data, call a tool; do not guess. If a tool returns nothing useful, say so.
 - For a new site, ensure_profile may spend one LLM call to learn it; that is expected.
+- If a crawl reports `blocked` or `human_help_needed`, DO NOT try to bypass the block.
+  Relay the human-help request plainly: tell the user the site is protected and what a
+  human would need to do. Never attempt to evade anti-bot protection.
 - Keep going (call tools) until you can fully answer, then emit {"final": ...}.
 """
 
@@ -156,6 +160,8 @@ class ConductorAgent:
                 return self._t_export(args.get("format", "json"))
             if tool == "list_catalog_sites":
                 return self._t_list_sites()
+            if tool == "list_help_requests":
+                return {"human_help_needed": Store(self.settings.db_path).help_queue()}
             return {"error": f"unknown tool '{tool}'"}
         except KeyError as exc:
             return {"error": f"missing argument {exc} for tool '{tool}'"}
@@ -220,9 +226,16 @@ class ConductorAgent:
                             llm_extractor=extractor, profile_author=self.profile_author)
         metrics = await orch.run(seeds=seeds)
         s = metrics.summary()
-        return {"products_stored": s["products_stored"], "avg_coverage": s["avg_coverage"],
-                "dead_letters": s["dead_letters"], "signature_drifts": s["signature_drifts"],
-                "field_coverage": s["field_coverage"], "seeds": [seed.url for seed in seeds]}
+        result = {"products_stored": s["products_stored"], "avg_coverage": s["avg_coverage"],
+                  "dead_letters": s["dead_letters"], "blocked": s["blocked"],
+                  "signature_drifts": s["signature_drifts"], "field_coverage": s["field_coverage"],
+                  "seeds": [seed.url for seed in seeds]}
+        # Surface any human-handoff requests so the conductor can relay them.
+        help_q = Store(self.settings.db_path).help_queue()
+        if help_q:
+            result["human_help_needed"] = [{"url": h["url"], "reason": h["reason"],
+                                            "action": h["suggested_action"]} for h in help_q]
+        return result
 
     def _t_export(self, fmt: str) -> dict:
         store = Store(self.settings.db_path)

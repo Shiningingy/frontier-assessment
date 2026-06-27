@@ -21,8 +21,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "jsonld",
-    "scraped_at": "2026-06-27T02:58:33.716416+00:00",
-    "updated_at": "2026-06-27T02:58:33.722553+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667747+00:00",
+    "updated_at": "2026-06-27T04:08:41.673582+00:00"
   },
   {
     "dedup_key": "DRCDG",
@@ -46,8 +46,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716528+00:00",
-    "updated_at": "2026-06-27T02:58:43.858517+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667855+00:00",
+    "updated_at": "2026-06-27T04:08:57.599240+00:00"
   },
   {
     "dedup_key": "DRCDI",
@@ -71,8 +71,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716490+00:00",
-    "updated_at": "2026-06-27T02:58:41.735496+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667816+00:00",
+    "updated_at": "2026-06-27T04:08:53.959979+00:00"
   },
   {
     "dedup_key": "DRCCY",
@@ -96,8 +96,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716663+00:00",
-    "updated_at": "2026-06-27T02:58:54.731444+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667986+00:00",
+    "updated_at": "2026-06-27T04:09:08.123485+00:00"
   },
   {
     "dedup_key": "DRCDM",
@@ -132,8 +132,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.714810+00:00",
-    "updated_at": "2026-06-27T02:58:36.150441+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667657+00:00",
+    "updated_at": "2026-06-27T04:08:45.588104+00:00"
   },
   {
     "dedup_key": "DRCCA",
@@ -157,8 +157,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716379+00:00",
-    "updated_at": "2026-06-27T02:58:36.945970+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667720+00:00",
+    "updated_at": "2026-06-27T04:08:47.320736+00:00"
   },
   {
     "dedup_key": "DRCDH",
@@ -182,8 +182,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716509+00:00",
-    "updated_at": "2026-06-27T02:58:43.004410+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667836+00:00",
+    "updated_at": "2026-06-27T04:08:55.514745+00:00"
   },
   {
     "dedup_key": "DRCDL",
@@ -207,8 +207,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "jsonld",
-    "scraped_at": "2026-06-27T02:58:33.716440+00:00",
-    "updated_at": "2026-06-27T02:58:33.725052+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667771+00:00",
+    "updated_at": "2026-06-27T04:08:41.675789+00:00"
   },
   {
     "dedup_key": "DRCCZ",
@@ -232,8 +232,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716644+00:00",
-    "updated_at": "2026-06-27T02:58:54.391767+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667968+00:00",
+    "updated_at": "2026-06-27T04:09:06.811489+00:00"
   },
   {
     "dedup_key": "DRCDA",
@@ -257,8 +257,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716621+00:00",
-    "updated_at": "2026-06-27T02:58:52.502880+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667950+00:00",
+    "updated_at": "2026-06-27T04:09:04.939742+00:00"
   },
   {
     "dedup_key": "DRCDB",
@@ -282,8 +282,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716603+00:00",
-    "updated_at": "2026-06-27T02:58:51.015774+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667932+00:00",
+    "updated_at": "2026-06-27T04:09:03.727220+00:00"
   },
   {
     "dedup_key": "DRCDD",
@@ -307,8 +307,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716565+00:00",
-    "updated_at": "2026-06-27T02:58:47.679296+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667892+00:00",
+    "updated_at": "2026-06-27T04:08:59.916979+00:00"
   },
   {
     "dedup_key": "DRCDE",
@@ -332,8 +332,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716547+00:00",
-    "updated_at": "2026-06-27T02:58:46.043401+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667873+00:00",
+    "updated_at": "2026-06-27T04:08:59.190558+00:00"
   },
   {
     "dedup_key": "DRCDJ",
@@ -357,8 +357,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716464+00:00",
-    "updated_at": "2026-06-27T02:58:41.209198+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667793+00:00",
+    "updated_at": "2026-06-27T04:08:52.246346+00:00"
   },
   {
     "dedup_key": "DRCDC",
@@ -382,8 +382,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:33.716583+00:00",
-    "updated_at": "2026-06-27T02:58:49.520569+00:00"
+    "scraped_at": "2026-06-27T04:08:41.667911+00:00",
+    "updated_at": "2026-06-27T04:09:01.989196+00:00"
   },
   {
     "dedup_key": "PFWVG",
@@ -407,8 +407,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095537+00:00",
-    "updated_at": "2026-06-27T02:58:57.004224+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369880+00:00",
+    "updated_at": "2026-06-27T04:09:11.721805+00:00"
   },
   {
     "dedup_key": "PFLUG",
@@ -432,8 +432,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095795+00:00",
-    "updated_at": "2026-06-27T02:59:12.983793+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370122+00:00",
+    "updated_at": "2026-06-27T04:09:32.043535+00:00"
   },
   {
     "dedup_key": "PFLUN",
@@ -457,8 +457,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095740+00:00",
-    "updated_at": "2026-06-27T02:59:08.893918+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370071+00:00",
+    "updated_at": "2026-06-27T04:09:26.762240+00:00"
   },
   {
     "dedup_key": "PFLVV",
@@ -482,8 +482,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095684+00:00",
-    "updated_at": "2026-06-27T02:59:04.451313+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370017+00:00",
+    "updated_at": "2026-06-27T04:09:22.779414+00:00"
   },
   {
     "dedup_key": "PFLWR",
@@ -507,8 +507,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095563+00:00",
-    "updated_at": "2026-06-27T02:58:59.371636+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369903+00:00",
+    "updated_at": "2026-06-27T04:09:13.672757+00:00"
   },
   {
     "dedup_key": "PFLXA",
@@ -532,8 +532,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095493+00:00",
-    "updated_at": "2026-06-27T02:58:55.871115+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369840+00:00",
+    "updated_at": "2026-06-27T04:09:09.680445+00:00"
   },
   {
     "dedup_key": "PFWRG",
@@ -557,8 +557,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095722+00:00",
-    "updated_at": "2026-06-27T02:59:06.462470+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370053+00:00",
+    "updated_at": "2026-06-27T04:09:25.295177+00:00"
   },
   {
     "dedup_key": "PFWRF",
@@ -582,8 +582,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095776+00:00",
-    "updated_at": "2026-06-27T02:59:11.221075+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370105+00:00",
+    "updated_at": "2026-06-27T04:09:30.454037+00:00"
   },
   {
     "dedup_key": "PFWRX",
@@ -607,8 +607,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095585+00:00",
-    "updated_at": "2026-06-27T02:58:59.808451+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369925+00:00",
+    "updated_at": "2026-06-27T04:09:15.532687+00:00"
   },
   {
     "dedup_key": "PFWRU",
@@ -632,8 +632,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095625+00:00",
-    "updated_at": "2026-06-27T02:59:01.601252+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369963+00:00",
+    "updated_at": "2026-06-27T04:09:18.840442+00:00"
   },
   {
     "dedup_key": "PFWRL",
@@ -657,8 +657,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095664+00:00",
-    "updated_at": "2026-06-27T02:59:03.512851+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370000+00:00",
+    "updated_at": "2026-06-27T04:09:20.824581+00:00"
   },
   {
     "dedup_key": "PFLVZ",
@@ -682,8 +682,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095645+00:00",
-    "updated_at": "2026-06-27T02:59:02.569327+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369982+00:00",
+    "updated_at": "2026-06-27T04:09:20.367356+00:00"
   },
   {
     "dedup_key": "PFLWH",
@@ -707,8 +707,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095605+00:00",
-    "updated_at": "2026-06-27T02:59:00.816394+00:00"
+    "scraped_at": "2026-06-27T04:08:42.369944+00:00",
+    "updated_at": "2026-06-27T04:09:17.356898+00:00"
   },
   {
     "dedup_key": "PFPHJ",
@@ -732,8 +732,8 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "mixed",
-    "scraped_at": "2026-06-27T02:58:35.095758+00:00",
-    "updated_at": "2026-06-27T02:59:10.760074+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370088+00:00",
+    "updated_at": "2026-06-27T04:09:28.630747+00:00"
   },
   {
     "dedup_key": "PFPJK",
@@ -757,7 +757,7 @@
     "variants": [],
     "alternatives": [],
     "extraction_tier": "jsonld",
-    "scraped_at": "2026-06-27T02:58:35.095704+00:00",
-    "updated_at": "2026-06-27T02:58:35.117101+00:00"
+    "scraped_at": "2026-06-27T04:08:42.370035+00:00",
+    "updated_at": "2026-06-27T04:08:42.391452+00:00"
   }
 ]
