@@ -28,18 +28,34 @@ tracks its evolution into a general, conversational, production-grade data tool.
   call via a real browser (observe-and-replay) — proven to read the true `nbHits` with no
   hardcoding.
 
-## Phase 1.5 — Close the autonomous-discovery loop (next)
+## Phase 1.5 — Close the autonomous-discovery loop + per-domain source memory (next)
 
-Turn the prototype into the full automated path, so an unseen API-driven site is handled
-without a human reverse-engineering it:
-- Completeness-critic detects a gap → **API-discovery agent** selects the captured product
-  API, infers pagination, and an LLM maps its JSON fields → our schema (grounded in the real
-  response).
-- **Cache the discovered recipe** like any profile (endpoint + payload + pagination + field
-  map); learned once, deterministic after.
-- Fall back to the **browser/MCP "vision" tier** when there's no clean API, and to **human
-  handoff** when blocked or uncertain. As the recipe cache grows across sites, coverage trends
-  toward "any site that permits automation."
+The key idea: cache not just *how to extract a page* (profiles, already done) but **which
+source to use for a whole site** — its learned "source strategy." Today `source.backend` is a
+global flag; it should be a **per-domain memory**, consulted first, so a site we've already
+figured out is handled automatically next time.
+
+Concretely, the self-improving loop (the same whether a human helped the first time or not):
+```
+crawl(html)  →  completeness-critic: "15 of 100 — incomplete"
+             →  recall: sites like this often serve full data via an API backend
+             →  probe (browser observe-and-replay, tools/browser_probe.py) → finds the API
+             →  CACHE a per-domain source recipe   profiles/<domain>/_source.json
+                  {backend: algolia, category_root: "Dental Supplies", ...}
+             →  re-crawl → 100 ✓
+next time     →  resolve source per-domain → cached recipe → straight to 100, no trial-and-error
+```
+So *"crawl gloves from safco"* returns the complete **100** (not the static-HTML 15), because
+the system **remembers** Safco's data lives in Algolia. The pieces exist — completeness-critic,
+the Algolia source, the `browser_probe` discovery prototype — and Phase 1.5 wires them into:
+- A **per-domain source-recipe cache** (`profiles/<domain>/_source.json`), resolved before the
+  global default; ship Safco's learned recipe so the known target is complete out of the box.
+- An **API-discovery agent**: on a completeness gap, select the captured product API, infer
+  pagination, and have an LLM map its JSON → our schema (grounded in the real response), then
+  cache the recipe.
+- Fallbacks: the **browser/MCP "vision" tier** when there's no clean API, and **human handoff**
+  when blocked/uncertain. As the recipe cache grows across sites, coverage trends toward "any
+  site that permits automation" — **consistently complete results under automation.**
 
 ## Phase 2 — Robustness & coverage
 
