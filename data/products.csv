@@ -1,7 +1,7 @@
 dedup_key,name,sku,item_number,brand,category_path,source_category,product_url,price,currency,pack_size,availability,description,specifications,image_urls,rating,variants,alternatives,extraction_tier,scraped_at
 DRCDK,Alasta Pro,DRCDK,DRCDK,Dash,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/alasta-pro,28.49,USD,,in_stock,"Make glove changes faster and easier with Alasta® PRO nitrile dental exam gloves, featuring innovative Glide Assist™ technology that helps you slide into gloves effortlessly — even with damp hands. Designed for dental professionals, the Soft Fit™ formulation provides a comfortable, form-fitting feel that enhances dexterity during procedures.
 The professional medical blue color offers a clean, clinical look that complements any operatory setting. Alasta® PRO gloves are fentanyl-tested and chemo-approved, ensuring trusted protection for use in high-risk or clinical dental environments.
-Each box contains 200 premium nitrile gloves, offering exceptional value and efficiency for busy dental practices.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdk.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],jsonld,2026-06-27T04:31:58.757211+00:00
+Each box contains 200 premium nitrile gloves, offering exceptional value and efficiency for busy dental practices.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdk.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],jsonld,2026-06-27T04:49:27.371172+00:00
 DRCDG,Bio Nitrile,DRCDG,DRCDG,Cranberry,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/bio-nitrile-sup-reg-sup,29.99,USD,,in_stock,"BioNitrile gloves are made with advanced biodegradable materials that break down 90% in less than 1.5 years. This reduces permanent waste and means less greenhouse gas emissions.
 
 Textured fingertip finish
@@ -11,7 +11,7 @@ Blue color
 Thickness at palm 2.0 mils
 Thickness at fingertip 2.2 mils
 300 gloves per box (250 size XL)
-Order 10 boxes to purchase a case.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdg.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:31:58.757308+00:00
+Order 10 boxes to purchase a case.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdg.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:27.371284+00:00
 DRCDI,Black Maxx,DRCDI,DRCDI,Dash,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/black-maxx-sup-reg-sup,28.49,USD,,in_stock,"Powder-free nitrile exam gloves.
 Proprietary inner coating helps gloves glide on damp hands easily.
 
@@ -21,7 +21,7 @@ Ambidextrous
 Black color
 Polymer coated
 Thickness: at palm 2.8 mils; at fingertip 3.9 mils
-Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdi.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:31:58.757273+00:00
+Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdi.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:27.371234+00:00
 DRCCY,Carbon Air,DRCCY,DRCCY,Cranberry,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/carbon-reg-air,29.49,USD,,in_stock,"Powder-free nitrile exam gloves.
 Exceptionally strong and flexible formulation prevents tearing, especially while donning.
 
@@ -31,8 +31,8 @@ Ambidextrous
 Black
 Thickness: at palm 2.0mils; at fingertips 2.7mils
 300 gloves per box (250 for x-large)
-Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drccy_2.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:31:58.757429+00:00
-DRCDM,Compac Nitrile,DRCDM,DRCDM,Cranberry,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/compac-nitrile,8.49,USD,,in_stock,"Compac™ By The Cuff® Nitrile Powder Free Exam Gloves feature innovative dispensing technology designed to reduce cross-contamination, minimize glove waste, and improve operatory efficiency.","{""Brand"": ""Cranberry® Compac"", ""Product Type"": ""Nitrile Exam Gloves"", ""Material"": ""Powder-free nitrile"", ""Thickness"": ""Approximately 2.2–2.5 mil"", ""Texture"": ""Fingertip textured"", ""Sterility"": ""Non-sterile"", ""Color"": ""Black"", ""Packaging"": ""100 gloves per bag"", ""Available Sizes"": ""XS, S, M, L, XL"", ""Use Case"": ""Dental and clinical examination procedures""}","[""https://www.safcodental.com/media/catalog/product/c/r/cranberry-compac-nitrile-front-facing-100-box_1.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:31:58.757119+00:00
+Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drccy_2.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:27.371459+00:00
+DRCDM,Compac Nitrile,DRCDM,DRCDM,Cranberry,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/compac-nitrile,8.49,USD,,in_stock,"Compac™ By The Cuff® Nitrile Powder Free Exam Gloves feature innovative dispensing technology designed to reduce cross-contamination, minimize glove waste, and improve operatory efficiency.","{""Brand"": ""Cranberry® Compac"", ""Product Type"": ""Nitrile Exam Gloves"", ""Material"": ""Powder-free nitrile"", ""Thickness"": ""Approximately 2.2–2.5 mil"", ""Texture"": ""Fingertip textured"", ""Sterility"": ""Non-sterile"", ""Color"": ""Black"", ""Packaging"": ""100 gloves per bag"", ""Available Sizes"": ""XS, S, M, L, XL"", ""Use Case"": ""Dental and clinical examination procedures""}","[""https://www.safcodental.com/media/catalog/product/c/r/cranberry-compac-nitrile-front-facing-100-box_1.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:27.371079+00:00
 DRCCA,Crave,DRCCA,DRCCA,Cranberry,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/crave-trade,24.49,USD,,in_stock,"Powder-free nitrile exam glove with lanolin and Vitamin E.
 
 Textured fingertip finish
@@ -43,7 +43,7 @@ Blue color
 Vitamin E and lanolin coated
 Thickness: at palm 3.5 mils; at fingertip 3.8 mils
 200 gloves per box
-Order 10 boxes&nbsp;to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcca_2.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",4.0,[],[],mixed,2026-06-27T04:31:58.757184+00:00
+Order 10 boxes&nbsp;to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcca_2.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",4.0,[],[],mixed,2026-06-27T04:49:27.371145+00:00
 DRCDH,GloveUp,DRCDH,DRCDH,Dash,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/gloveup-sup-reg-sup,38.49,USD,,in_stock,"Powder-free nitrile exam gloves.
 
 Textured fingertip finish
@@ -51,8 +51,8 @@ Beaded cuff
 Ambidextrous
 Cobalt color
 Thickness: at palm 1.9 mils; at fingertip 3.1 mils
-Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdh.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:31:58.757291+00:00
-DRCDL,Halyard Black Nitrile,DRCDL,DRCDL,Halyard,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/halyard-black-nitrile,8.29,USD,,in_stock,"HALYARD* Black Nitrile Exam Gloves deliver dependable protection and professional performance for dental professionals. Perfect for clinical and hygiene procedures, these nitrile gloves provide excellent tactile sensitivity and a secure grip with textured fingertips for confident instrument handling. The sleek black color conceals stains, maintaining a clean, modern look in any dental setting. Each box contains 100 gloves in a SMARTPULL* Dispenser designed to reduce waste, improve efficiency, and save valuable operatory space.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdl.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],jsonld,2026-06-27T04:31:58.757233+00:00
+Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdh.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:27.371259+00:00
+DRCDL,Halyard Black Nitrile,DRCDL,DRCDL,Halyard,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/halyard-black-nitrile,8.29,USD,,in_stock,"HALYARD* Black Nitrile Exam Gloves deliver dependable protection and professional performance for dental professionals. Perfect for clinical and hygiene procedures, these nitrile gloves provide excellent tactile sensitivity and a secure grip with textured fingertips for confident instrument handling. The sleek black color conceals stains, maintaining a clean, modern look in any dental setting. Each box contains 100 gloves in a SMARTPULL* Dispenser designed to reduce waste, improve efficiency, and save valuable operatory space.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdl.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],jsonld,2026-06-27T04:49:27.371193+00:00
 DRCCZ,Micro-Touch NitraFree Blue,DRCCZ,DRCCZ,Ansell,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/micro-touch-reg-nitrafree-trade-blue,19.99,USD,,in_stock,"Powder-free nitrile exam gloves.
 Comfortable and reliable protection with a low dermatits potential. Made without sulfur-based chemical accelerants for tactility and to help prevent allergic reactions.
 
@@ -63,7 +63,7 @@ Blue color
 Thickness: at palm 2.8 mils; at fingertip 3.9 mils
 200 gloves per box (X-large 180 gloves per box)
 Order 10 boxes to purchase a case
-Tested for use with chemotherapy drugs",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drccz.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:31:58.757411+00:00
+Tested for use with chemotherapy drugs",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drccz.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:27.371427+00:00
 DRCDA,Micro-Touch NitraFree Pink,DRCDA,DRCDA,Ansell,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/micro-touch-reg-nitrafree-trade-pink,15.99,USD,,in_stock,"Powder-free nitrile exam gloves.
 Made from a durable and soft nitrile formulation manufactured without chemical accelerators, helping to protect the user from allergies.
 
@@ -74,7 +74,7 @@ Pink color
 Thickness: at palm 3.1 mils; at fingertip 5.5 mils
 100 gloves per box
 Order 10 boxes to purchase a case
-Tested for use with chemotherapy drugs",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcda.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:31:58.757394+00:00
+Tested for use with chemotherapy drugs",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcda.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:27.371400+00:00
 DRCDB,Microflex MidKnight Touch,DRCDB,DRCDB,Ansell,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/microflex-reg-midknight-trade-touch,13.49,USD,,in_stock,"Powder-free nitrile exam gloves.
 
 ERGOFORM technology reduces muscle strain and improves comfort
@@ -84,7 +84,7 @@ Ambidextrous
 Black color
 Thickness: at palm 2.8 mils; at fingertip 4.3 mils
 100 gloves per box
-Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdb.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:31:58.757377+00:00
+Order 10 boxes to purchase a case",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdb.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:27.371375+00:00
 DRCDD,PowerForm Black,DRCDD,DRCDD,SW Safety,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/powerform-black,16.49,USD,,in_stock,"Powder-free nitrile exam gloves.
 Protect hands and the environment with a biodegradable single-use exam glove that combines performance, durability and tactile sensitivity for critical tasks. EcoTek&reg; Biodegradability Technology accelerates landfill breakdown without any performance loss.&nbsp;
 
@@ -97,7 +97,7 @@ Black color
 5.0 mil. thickness
 1.5 AQL exceeds laboratory standards
 100 gloves per box
-Order 10 boxes to purchase a case.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdd.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:31:58.757343+00:00
+Order 10 boxes to purchase a case.",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdd.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:27.371329+00:00
 DRCDE,Quantum Blue,DRCDE,DRCDE,Quantum,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/quantum-blue,8.59,USD,,in_stock,"Powder-free nitrile exam gloves.
 The soft and stretchy formulation of the Quantum Blue Nitrile Exam Glove provides for an exceptional fit and feel. Nonstick interior makes donning a breeze, even with damp hands. Micro-textured outer surface allows superior gripping of instruments. The super soft and stretchy formulation mimics the fit and feel of latex. Quantum Blue exam gloves are highly puncture and chemical resistant.
 
@@ -112,7 +112,7 @@ Color: Vibrant blue
 Industries: Dental, veterinarian, mortuary, cleaning, tattoo
 Case Pack: 100 gloves per box, 10 boxes per case
 
-Formerly called Cobalt Blue",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcde.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:31:58.757326+00:00
+Formerly called Cobalt Blue",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcde.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:27.371307+00:00
 DRCDJ,Safco Nitrilex Soothe,DRCDJ,DRCDJ,Safco,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/safco-nitrilex-soothe,15.99,USD,,in_stock,"Powder-free nitrile exam gloves.
 Our reliably strong and thin nitrile glove, but now with a colloidal oatmeal coating. This is specifically formulated to lock in moisture, giving your skin a chance to rehydrate from handwashing. Designed to soften your skin and soothe itching, our anti-inflammatory properties make our Safco Nitrilex Soothe perfect for clinicians with dry skin, returning your hands to their natural PH balance.&nbsp;
 
@@ -156,21 +156,21 @@ Thickness: at palm 2.5 mils; at fingertip 3.3 mils
 
 
 
-To purchase a full case, please order as qty of 10",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdj.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:31:58.757253+00:00
-DRCDC,TrueForm,DRCDC,DRCDC,SW Safety,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/trueform,12.99,USD,,in_stock,"SW Safety TrueForm Exam Glove TF-95RB 3.1 MIL&nbsp;in&nbsp;Royal Blue. Medical grade glove with textured fingertips and reinforced palm. Perfect for dental, medical applications as well as veterinarian and dairy.&nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdc.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:31:58.757359+00:00
+To purchase a full case, please order as qty of 10",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdj.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:27.371212+00:00
+DRCDC,TrueForm,DRCDC,DRCDC,SW Safety,Dental Exam Gloves,Dental Exam Gloves,https://www.safcodental.com/product/trueform,12.99,USD,,in_stock,"SW Safety TrueForm Exam Glove TF-95RB 3.1 MIL&nbsp;in&nbsp;Royal Blue. Medical grade glove with textured fingertips and reinforced palm. Perfect for dental, medical applications as well as veterinarian and dairy.&nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/d/r/drcdc.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:27.371351+00:00
 PFWVG,DentalProX VeraGraft Dental Powder,PFWVG,PFWVG,DentalProX,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/dentalprox-veragraft-trade-dental-powder,28.99,USD,,in_stock,"Safe alternative to an autograft with no need for a second surgical site
 Osteoconductive
 Used for volumetric enhancement, space maintenance, and faster remodeling
 Sterile ground dental powder is available in cortical, cancellous and a cortical/cancellous mix.&nbsp;
-Validated to a sterility assurance level (SAL) of 10(-6) in accordance with ISO 11137-2 Method 1.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwvg.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.294986+00:00
+Validated to a sterility assurance level (SAL) of 10(-6) in accordance with ISO 11137-2 Method 1.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwvg.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190761+00:00
 PFLUG,Disposable scalpels - Bard-Parker (BD),PFLUG,PFLUG,Bard-Parker,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/disposable-scalpels-bard-parker-bd,18.99,USD,,in_stock,"Sterile disposable scalpel with a stainless steel blade.&nbsp;Intended for tissue separation, and other procedures that require a sharp surgical blade to puncture or cut.
 Offers the superior cutting advantages of stainless steel technology.
 
 Consistent sharpness, control and strength.
 Uniquely packaged for safety and ease of use.
 Sterile.
-Not made with natural rubber latex",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflug.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:32:03.295207+00:00
-PFLUN,Disposable scalpels - Integra Miltex,PFLUN,PFLUN,Integra Miltex,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/disposable-scalpels-integra-miltex,19.49,USD,,in_stock,Sterile disposable scalpel; plastic handle with a stainless steel blade. Razor&nbsp;sharp for superior cutting and a clean incision.,{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflun.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:32:03.295161+00:00
+Not made with natural rubber latex",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflug.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:28.191005+00:00
+PFLUN,Disposable scalpels - Integra Miltex,PFLUN,PFLUN,Integra Miltex,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/disposable-scalpels-integra-miltex,19.49,USD,,in_stock,Sterile disposable scalpel; plastic handle with a stainless steel blade. Razor&nbsp;sharp for superior cutting and a clean incision.,{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflun.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:28.190954+00:00
 PFLVV,Feather Microsurgical Blades,PFLVV,PFLVV,J. Morita,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/feather-sup-reg-nbsp-sup-microsurgical-blades,89.99,USD,,in_stock,"Advanced instrument system of interchangeable blades and handles.
 
 Ultra-sharp, retains cutting efficiency.
@@ -180,7 +180,7 @@ Small tips for surgical precision.
 Variety of applications including periodontal &amp; regenerative surgery.
 Multiple handle designs.
 Made of high-quality stainless steel
-All blades are gamma-sterilized and can be used immediately after opening the package.&nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflvv.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295112+00:00
+All blades are gamma-sterilized and can be used immediately after opening the package.&nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflvv.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190900+00:00
 PFLWR,Myco Medical Glassvan Scalpel Blades,PFLWR,PFLWR,Myco Medical,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/myco-medical-nbsp-glassvan-reg-scalpel-blades,24.99,USD,,in_stock,"GLASSVAN&reg; Surgical Blades have been trusted by users around the world for more than 25 years.
 
 Automated grinding and proprietary polishing process ensure consistent, clean, and sharp cutting edges
@@ -188,30 +188,30 @@ Produced from high quality Swiss carbon steel
 Two VCI strips ensure product and packaging integrity and reduce risk of blade piercing the foil
 Manufactured in FDA-inspected facilities and conform to ISO-7740 and ISO-13485
 
-Carbon steel and stainless-steel blades are available sterile in sizes 10-25, with select sizes also available non-sterile.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflwr.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295008+00:00
+Carbon steel and stainless-steel blades are available sterile in sizes 10-25, with select sizes also available non-sterile.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflwr.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190783+00:00
 PFLXA,Myco Medical TechnoCut Disposable Scalpels,PFLXA,PFLXA,Myco Medical,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/myco-medical-technocut-reg-disposable-scalpels,8.99,USD,,in_stock,"Non-slip, clear shield improves safety and enables easy blade size identification
 Ergonomic, non-slip plastic handle with integrated metric ruler for convenience
 Scalpel blades produced from high-quality Swiss stainless steel
 100% automated inspection verifies the blade to handle attachment
 Cold-staking used for attaching blade to handle, improving consistency
-Scalpels manufactured in facilities that conform to ISO 13485",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflxa.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.294946+00:00
-PFWRG,Ossify Cortical Bone Sheet,PFWRG,PFWRG,Surgical Esthetics,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/ossify-sup-reg-sup-cortical-bone-sheet,149.49,USD,,in_stock,"Ossify Bone Sheet is 100% laminar cortical bone that has been demineralized, which makes it flexible allowing it to be contoured, molded and trimmed. This enables it to be used as a membrane and can be screwed, tacked or sutured into place. It can be placed alone or in combination with particulate allograft to regenerate larger defects. It comes pre-hydrated and ready to use. &nbsp; &nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrg.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295144+00:00
-PFWRF,Ossify DBM Cortical Fiber Bone Graft,PFWRF,PFWRF,Surgical Esthetics,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/ossify-sup-reg-sup-dbm-cortical-fiber-bone-graft,121.49,USD,,in_stock,"Ossify DBM Fiber is a next generation bone allograft composed of interwoven demineralized cortical bone fibers. It is configured both by itself and with the addition of 1-1.5mm mineralized cancellous particles. This unique allograft provides an ideal scaffold for bone formation with its extremely high surface area and its optimum shape conforming properties, making it highly osteoconductive. In addition, it has great osteoinductive potential due to the specialized demineralized process. The graft hydrates very uniformly with PRP, blood or saline for maximum handling. It can be used in a variety of surgical applications, including socket grafting, GBR, sinus augmentation, and other bone grafting procedures.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrf.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295192+00:00
+Scalpels manufactured in facilities that conform to ISO 13485",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflxa.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190719+00:00
+PFWRG,Ossify Cortical Bone Sheet,PFWRG,PFWRG,Surgical Esthetics,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/ossify-sup-reg-sup-cortical-bone-sheet,149.49,USD,,in_stock,"Ossify Bone Sheet is 100% laminar cortical bone that has been demineralized, which makes it flexible allowing it to be contoured, molded and trimmed. This enables it to be used as a membrane and can be screwed, tacked or sutured into place. It can be placed alone or in combination with particulate allograft to regenerate larger defects. It comes pre-hydrated and ready to use. &nbsp; &nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrg.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190935+00:00
+PFWRF,Ossify DBM Cortical Fiber Bone Graft,PFWRF,PFWRF,Surgical Esthetics,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/ossify-sup-reg-sup-dbm-cortical-fiber-bone-graft,121.49,USD,,in_stock,"Ossify DBM Fiber is a next generation bone allograft composed of interwoven demineralized cortical bone fibers. It is configured both by itself and with the addition of 1-1.5mm mineralized cancellous particles. This unique allograft provides an ideal scaffold for bone formation with its extremely high surface area and its optimum shape conforming properties, making it highly osteoconductive. In addition, it has great osteoinductive potential due to the specialized demineralized process. The graft hydrates very uniformly with PRP, blood or saline for maximum handling. It can be used in a variety of surgical applications, including socket grafting, GBR, sinus augmentation, and other bone grafting procedures.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrf.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190988+00:00
 PFWRX,R.T.R. Membrane,PFWRX,PFWRX,Septodont,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/r-t-r-membrane,108.99,USD,,in_stock,"Biocompatible Type I bovine Achilles tendon collagen. The absorbable, implantable material creates a barrier to protect PDL development from fast growing tissues. Supports wound stabilization and allows essential nutrients to pass through.
 
 Indicated for GTR procedures.
 Absorbable within 4-8 weeks.
 Appears white in the dry state; translucent and non-slippery when wet.
-Cut to size and shape.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrx.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295027+00:00
+Cut to size and shape.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrx.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190803+00:00
 PFWRU,R.T.R.+ Syringe,PFWRU,PFWRU,Septodont,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/r-t-r-syringe,152.99,USD,,in_stock,"Sterile and fully resorbable synthetic bone grafting material. Ideal osteogenic matrix mimics human bone. Available in 2 biphasic&nbsp;&beta;-TCP (&beta;-Tricalcium phosphate) / Hydroxyapatite formulations:
 
 40%/60%: New bone formation gradually forms at the same pace as natural bone.
 80%/20%: New natural bone will generate at an accelerated pace.
 
-Indications include: post-extraction socket preservation, periodontal defects, infrabony defects, peri-implant defects, sinus lift, ridge augmentation, and cystic cavities.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwru.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:32:03.295062+00:00
+Indications include: post-extraction socket preservation, periodontal defects, infrabony defects, peri-implant defects, sinus lift, ridge augmentation, and cystic cavities.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwru.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],mixed,2026-06-27T04:49:28.190844+00:00
 PFWRL,Regenafill Bone Graft Plug,PFWRL,PFWRL,Surgical Esthetics,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/regenafill-sup-trade-sup-bone-graft-plug,259.99,USD,,in_stock,"Composed of 80% carbonate phosphate based mineral with a carbonate apatite structure combined with 20% Type I Achilles bovine tendon collagen. This mineral is physically and chemically comparable to the mineralized matrix of human bone, which makes it an excellent choice for socket preservation. No membrane needed in most cases. &nbsp;
 Intended for use in dental surgery including:
-&bull; Augmentation or reconstructive treatment of the alveolar ridge.&bull; Filling of infrabony periodontal defects.&bull; Filling of defects after root resection, apicoectomy, and cystectomy.&bull; Filling of extraction sockets to enhance preservation of alveolar ridge.&bull; Elevation of the maxillary sinus floor.&bull; Filling of periodontal defects in conjunction with GTR. &bull; Filling of peri-implant defects in conjunction with GBR.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrl.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295095+00:00
+&bull; Augmentation or reconstructive treatment of the alveolar ridge.&bull; Filling of infrabony periodontal defects.&bull; Filling of defects after root resection, apicoectomy, and cystectomy.&bull; Filling of extraction sockets to enhance preservation of alveolar ridge.&bull; Elevation of the maxillary sinus floor.&bull; Filling of periodontal defects in conjunction with GTR. &bull; Filling of peri-implant defects in conjunction with GBR.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfwrl.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190882+00:00
 PFLVZ,Safety Scalpels,PFLVZ,PFLVZ,Integra Miltex,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/safety-scalpels,38.49,USD,,in_stock,"Retractable blade scalpel offers ultimate safety.
 
 Sterile Stainless steel, razor-sharp cutting edge.
@@ -221,7 +221,7 @@ Retract with one motion to protected position.
 Metric ruler on each scalpel.
 Individually packaged.
 
-&nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflvz.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295080+00:00
-PFLWH,Soft Tissue Trimmer,PFLWH,PFLWH,Kerr Rotary,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/soft-tissue-trimmer,139.99,USD,,in_stock,FG bur designed for soft tissue surgery. Can be used as an alternative to electrosurgery and surgical blades; functions as a rotating scalpel for soft tissue that promotes coagulation for minimal bleeding. Biocompatible&nbsp;hard oxide point cuts tissue without burning. Autoclavable.,{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflwh.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295044+00:00
-PFPHJ,Surgicel,PFPHJ,PFPHJ,Ethicon,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/surgicel-reg,1118.99,USD,,in_stock,"Sterile, shear-weave, absorbable hemostat used to control bleeding in tooth extractions and oral surgery. Produced from oxidized&nbsp;regenerated cellulose to ensure purity and consistency. Fully absorbable within 7-14 days. Strong yet flexible and malleable to conform to irregular&nbsp;surfaces; may be folded or cut to size.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfphj.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:32:03.295176+00:00
-PFPJK,Surgifoam,PFPJK,PFPJK,Ethicon,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/surgifoam-reg,214.49,USD,,in_stock,"Sterile, water insoluble, malleable porcine gelatin absorbable sponge, intended for hemostatic use by applying to a bleeding surface.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfpjk.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],jsonld,2026-06-27T04:32:03.295128+00:00
+&nbsp;",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflvz.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190863+00:00
+PFLWH,Soft Tissue Trimmer,PFLWH,PFLWH,Kerr Rotary,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/soft-tissue-trimmer,139.99,USD,,in_stock,FG bur designed for soft tissue surgery. Can be used as an alternative to electrosurgery and surgical blades; functions as a rotating scalpel for soft tissue that promotes coagulation for minimal bleeding. Biocompatible&nbsp;hard oxide point cuts tissue without burning. Autoclavable.,{},"[""https://www.safcodental.com/media/catalog/product/p/f/pflwh.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190824+00:00
+PFPHJ,Surgicel,PFPHJ,PFPHJ,Ethicon,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/surgicel-reg,1118.99,USD,,in_stock,"Sterile, shear-weave, absorbable hemostat used to control bleeding in tooth extractions and oral surgery. Produced from oxidized&nbsp;regenerated cellulose to ensure purity and consistency. Fully absorbable within 7-14 days. Strong yet flexible and malleable to conform to irregular&nbsp;surfaces; may be folded or cut to size.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfphj.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",,[],[],mixed,2026-06-27T04:49:28.190972+00:00
+PFPJK,Surgifoam,PFPJK,PFPJK,Ethicon,Sutures & surgical products,Sutures & surgical products,https://www.safcodental.com/product/surgifoam-reg,214.49,USD,,in_stock,"Sterile, water insoluble, malleable porcine gelatin absorbable sponge, intended for hemostatic use by applying to a bleeding surface.",{},"[""https://www.safcodental.com/media/catalog/product/p/f/pfpjk.jpg?width=265&height=265&canvas=265,265&optimize=medium&fit=bounds""]",5.0,[],[],jsonld,2026-06-27T04:49:28.190918+00:00

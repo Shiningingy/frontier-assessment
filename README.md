@@ -162,11 +162,13 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
 
 ## 6. Limitations (current)
 
-- **Scope:** the 2 Safco seed categories are single-page (15 items each), and Safco's
-  pagination is JS-rendered (no static `?p=` links), so it isn't walked via httpx.
-  Pagination *following* is implemented and **demonstrated live on a multi-page,
-  non-JSON-LD site** (books.toscrape.com → 60 products across pages 1→3; see
-  [docs/DEMO.md](docs/DEMO.md)) and covered by tests.
+- **Scope / Safco pagination:** next-page detection is **param-agnostic** (handles
+  `rel=next`, `?p=`, `?page=`, `?x=`, `?start=`, path-based `page-2.html`, … and ignores
+  cross-domain links). But Safco serves the **same first 15 products in static HTML
+  regardless of `?page=`** — real pagination is done client-side in JS — so httpx can't
+  reach page 2; that needs the Playwright tier. Pagination following is **demonstrated
+  live on a multi-page, non-JSON-LD site** (books.toscrape.com → 60 products across
+  pages 1→3; see [docs/DEMO.md](docs/DEMO.md)) and covered by tests.
 - **Specifications** appear in static HTML on only some product pages (~1/30); most
   Safco detail pages have no spec list. This is the real state of the source, and the
   motivating case for the LLM extraction fallback (infer specs from the description).
