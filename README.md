@@ -13,8 +13,25 @@ catalog Q&A).
 > 📖 **New here? Read the [User Manual](docs/MANUAL.md)** — install, the LLM
 > backend & login model, full command/config reference, chat & UI walkthrough, and
 > troubleshooting. See **[docs/DEMO.md](docs/DEMO.md)** for real run transcripts
-> (Safco, the books.toscrape any-site demo, and the Frontier compliance/handoff case)
-> and **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** for diagrams.
+> (Safco, the books.toscrape any-site demo, and the Frontier compliance/handoff case),
+> **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** for diagrams, and
+> **[docs/PROGRESS.md](docs/PROGRESS.md)** for the build journey & findings.
+>
+> 🎞️ **For a 2-minute overview, see [`Frontier_Dental_POC_Presentation.pdf`](Frontier_Dental_POC_Presentation.pdf)** (the interviewer deck).
+
+### Completeness & the complete catalog (honest note)
+
+Safco's category pages show only ~15 curated items; the real catalog loads client-side from the
+site's own **Algolia** API. Two things address this:
+- a **completeness-critic** (`safco check-completeness <url>`) that autonomously detects "we got
+  15 of 100" by reading the page's true total — no hardcoded knowledge;
+- a **complete-catalog source** (`source.backend: algolia` in config) — a transparently
+  hand-authored "recipe" using the site's public search API → the full displayed catalog
+  (**Gloves 100 + Sutures 56 = 156 products with variants**).
+
+The Algolia recipe is presented honestly as *what the autonomous workflow should discover* (see the
+observe-and-replay prototype `tools/browser_probe.py` and [ROADMAP.md](ROADMAP.md)), not as a claim
+of full autonomy.
 
 ```
 $ safco crawl

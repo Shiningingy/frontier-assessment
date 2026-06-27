@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Frontier Dental AI Take-Home — POC Presentation</title>
+<style>
+  :root{
+    --ink:#0f2233; --muted:#5b7184; --line:#dce6ee;
+    --brand:#0e7c86; --brand2:#1196a3; --accent:#e8f5f6; --good:#1a9e57; --warn:#c0392b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;color:var(--ink);
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  .slide{position:relative; width:100%; min-height:185mm; padding:18mm 16mm 14mm;
+    page-break-after:always; overflow:hidden;}
+  .slide:last-child{page-break-after:auto;}
+  h1{font-size:30pt; line-height:1.12; margin:0 0 6pt;}
+  h2{font-size:19pt; margin:0 0 10pt; color:var(--brand); letter-spacing:.2px;}
+  h2 .num{color:var(--line); font-weight:800; margin-right:8px;}
+  p,li{font-size:11.2pt; line-height:1.5; color:#26384a;}
+  .kicker{font-size:9.5pt; letter-spacing:2px; text-transform:uppercase; color:var(--brand2); font-weight:700;}
+  .muted{color:var(--muted);}
+  .pill{display:inline-block; background:var(--accent); color:var(--brand);
+    border:1px solid #bfe3e6; border-radius:999px; padding:3px 11px; font-size:9pt; font-weight:600; margin:2px 4px 2px 0;}
+  .grid{display:flex; gap:14px; flex-wrap:wrap;}
+  .card{flex:1 1 0; min-width:0; background:#fff; border:1px solid var(--line);
+    border-radius:12px; padding:12px 14px;}
+  .card h3{margin:0 0 4px; font-size:11.5pt; color:var(--ink);}
+  .card p{font-size:10pt; margin:0; color:var(--muted);}
+  table{width:100%; border-collapse:collapse; margin-top:6px; font-size:10.2pt;}
+  th,td{text-align:left; padding:7px 9px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{color:var(--brand); font-size:9pt; text-transform:uppercase; letter-spacing:.5px;}
+  .good{color:var(--good); font-weight:700;}
+  .warn{color:var(--warn); font-weight:700;}
+  .foot{position:absolute; bottom:9mm; left:16mm; right:16mm; display:flex; justify-content:space-between;
+    font-size:8pt; color:var(--muted); border-top:1px solid var(--line); padding-top:5px;}
+  ul{margin:6px 0 0; padding-left:18px;} li{margin:4px 0;}
+  .ladder{display:flex; flex-direction:column; gap:6px; margin-top:8px;}
+  .step{display:flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--line);
+    border-left:4px solid var(--brand2); border-radius:8px; padding:8px 12px; font-size:10.5pt;}
+  .step b{color:var(--brand);}
+  .step.human{border-left-color:var(--warn);}
+  .flow{display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:8px;}
+  .node{background:var(--accent); border:1px solid #bfe3e6; color:var(--brand); border-radius:8px;
+    padding:7px 11px; font-size:9.6pt; font-weight:600;}
+  .arrow{color:var(--brand2); font-weight:800;}
+  .cover{display:flex; flex-direction:column; justify-content:center; min-height:230mm;
+    background:linear-gradient(135deg,#0e7c86 0%, #0b5560 100%); color:#fff; padding:24mm 18mm;}
+  .cover h1{font-size:34pt; color:#fff; max-width:80%;}
+  .cover .sub{font-size:14pt; color:#d7f3f5; margin-top:8px; max-width:78%;}
+  .cover .tag{margin-top:20px;}
+  .cover .tag .pill{background:rgba(255,255,255,.14); color:#eafafa; border-color:rgba(255,255,255,.3);}
+  .cover .meta{margin-top:26px; font-size:10pt; color:#bfe9ec;}
+  .big{font-size:15pt; font-weight:700; color:var(--ink);}
+  .lead{font-size:12pt; color:#33485b;}
+  .quote{background:#fff6f5; border:1px solid #f3d2cd; border-left:4px solid var(--warn);
+    border-radius:8px; padding:10px 13px; font-size:10pt; color:#7d2c22; margin-top:8px;}
+</style>
+</head>
+<body>
+
+<!-- 1. COVER -->
+<section class="slide cover">
+  <div class="kicker" style="color:#a9e7ec">Frontier Dental · AI Team Take-Home</div>
+  <h1>Agentic Product Scraping &amp; Structured Catalog Extraction</h1>
+  <div class="sub">A runnable POC for Safco Dental — and a workflow designed to generalize to (almost) any site.</div>
+  <div class="tag">
+    <span class="pill">Deterministic where possible</span>
+    <span class="pill">AI where it pays</span>
+    <span class="pill">Honest &amp; compliant</span>
+    <span class="pill">Production-minded</span>
+  </div>
+  <div class="meta">Two target categories · Agent-based design · Complete catalog via the site's own API · 30 passing tests</div>
+</section>
+
+<!-- 2. AT A GLANCE -->
+<section class="slide">
+  <div class="kicker">Executive summary</div>
+  <h2><span class="num">01</span>What we built, at a glance</h2>
+  <p class="lead">A working, agent-based scraper that discovers categories, extracts products,
+     normalizes them to a documented schema, stores them (SQLite + JSON/CSV/Excel), and is
+     architected to harden for production — with AI used only where it earns its place.</p>
+  <div class="grid" style="margin-top:10px">
+    <div class="card"><h3>Two runtimes, one toolset</h3><p>A deterministic core that runs with no API key, plus a conversational agent layer (terminal chat + Gradio web UI).</p></div>
+    <div class="card"><h3>Self-adapting</h3><p>One generic extractor driven by cached JSON “profiles”. An LLM agent authors profiles for unseen sites — no per-site code.</p></div>
+    <div class="card"><h3>Grounded &amp; honest</h3><p>Agents speak only from fetched pages / DB. Anti-bot blocks are detected and <b>not</b> evaded; a human-in-the-loop is the final tier.</p></div>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>Complete target data</h3><p>Gloves <b>100</b> + Sutures <b>56</b> = <b>156</b> products with variant SKUs — the full displayed catalog, via the site's own API.</p></div>
+    <div class="card"><h3>Proven generality</h3><p>Live any-site + pagination demo on a permission-friendly sandbox (60 products across 3 pages, no JSON-LD).</p></div>
+    <div class="card"><h3>Engineered</h3><p>Rate-limit, retries, resumable checkpoints, dedup, idempotency, config-driven, secrets, observability, Docker — and 30 tests.</p></div>
+  </div>
+  <div class="foot"><span>Frontier Dental — AI Take-Home POC</span><span>01 / 09</span></div>
+</section>
+
+<!-- 3. THE JOURNEY -->
+<section class="slide">
+  <div class="kicker">How we got here — thinking &amp; iteration</div>
+  <h2><span class="num">02</span>The journey</h2>
+  <table>
+    <tr><th style="width:20%">Step</th><th>What we found / did</th></tr>
+    <tr><td><b>Deterministic core</b></td><td>Safco serves clean schema.org <b>JSON-LD</b> in static HTML → extract 30 products at ~0.89 coverage with <b>zero LLM</b>. AI reserved for the hard parts.</td></tr>
+    <tr><td><b>Made it agentic</b></td><td>Added a conversational <b>conductor</b> (front door), <b>any-site</b> auto-authoring of extraction profiles, and a <b>Gradio</b> web UI.</td></tr>
+    <tr><td><b>Pagination puzzle</b></td><td>Category pages show only ~15 items; <code>?page=</code> is client-side JS. Built <b>param-agnostic</b> next-page detection; proved pagination live on a sandbox (60 / 3 pages).</td></tr>
+    <tr><td><b>Compliance test</b></td><td>Pointed the tool at <b>Frontier's own site</b> → Cloudflare <b>403</b> + robots disallows AI crawlers. The tool <b>detects &amp; refuses to evade</b>, and hands off to a human.</td></tr>
+    <tr><td><b>Completeness</b></td><td>Realised 15 ≠ the full catalog. Discovered the site's own <b>Algolia API</b> (observe-and-replay) → true totals <b>Gloves 100 / Sutures 56</b> (gloves matches the browser's “7 pages, 100 products”).</td></tr>
+    <tr><td><b>New agent</b></td><td>This taught us the missing piece: a <b>completeness-critic</b> agent that checks “did we get everything?” and escalates if not.</td></tr>
+  </table>
+  <div class="foot"><span>Frontier Dental — AI Take-Home POC</span><span>02 / 09</span></div>
+</section>
+
+<!-- 4. ARCHITECTURE -->
+<section class="slide">
+  <div class="kicker">Sound, agent-based design</div>
+  <h2><span class="num">03</span>Architecture at a glance</h2>
+  <div class="flow">
+    <span class="node">Seeds</span><span class="arrow">→</span>
+    <span class="node">Navigator</span><span class="arrow">→</span>
+    <span class="node">Extractor (profile)</span><span class="arrow">→</span>
+    <span class="node">Validator / Dedup</span><span class="arrow">→</span>
+    <span class="node">SQLite</span><span class="arrow">→</span>
+    <span class="node">Export JSON/CSV/XLSX</span>
+  </div>
+  <p class="muted" style="margin-top:6px">A conversational <b>conductor</b> sits on top, turning natural language into tool calls; a <b>completeness-critic</b> checks the result; a <b>reporter</b> answers questions over the data — all grounded in real output.</p>
+  <table style="margin-top:6px">
+    <tr><th style="width:24%">Agent</th><th>Responsibility</th></tr>
+    <tr><td>Navigator</td><td>Discover products, subcategories, pagination (param-agnostic).</td></tr>
+    <tr><td>Page-classifier</td><td>Category / listing / detail (rules first, LLM if ambiguous).</td></tr>
+    <tr><td>Profile-author ★</td><td>Inspect an unseen template, write + self-validate + cache an extraction profile.</td></tr>
+    <tr><td>Extractor</td><td>Apply the cached profile; LLM fallback with a grounding guard.</td></tr>
+    <tr><td>Validator / dedup</td><td>Normalize to schema, dedup on SKU, score field coverage.</td></tr>
+    <tr><td>Completeness-critic ★</td><td>Compare what we captured vs the page's true total; escalate if incomplete.</td></tr>
+    <tr><td>Conductor ★</td><td>Conversational entry point over any site (chat / web UI).</td></tr>
+    <tr><td>Reporter</td><td>Grounded natural-language Q&amp;A over the catalog.</td></tr>
+  </table>
+  <div class="foot"><span>★ = where AI/agents add the most value</span><span>03 / 09</span></div>
+</section>
+
+<!-- 5. KEY INSIGHT -->
+<section class="slide">
+  <div class="kicker">The core idea</div>
+  <h2><span class="num">04</span>Completeness + autonomous discovery</h2>
+  <p class="lead">A naïve scraper grabs the 15-item sample and thinks it's done. The agentic system should <b>know it isn't</b>, and find the rest.</p>
+  <div class="grid" style="margin-top:8px">
+    <div class="card"><h3>1 · Completeness-critic</h3><p>Compares extracted count to the page's <b>true total</b>. On Safco it autonomously reports <b>“15 of 100 — incomplete”</b> with no human hint.</p></div>
+    <div class="card"><h3>2 · Observe &amp; replay</h3><p>A real browser captures the page's <b>own data API call</b> (Algolia). The captured request already contains the right filters &amp; <code>nbHits=100</code> — replay it paginated to get everything.</p></div>
+    <div class="card"><h3>3 · Cache the recipe</h3><p>Store the discovered API recipe like any profile — learned once, deterministic after. Generalizes to any API-driven catalog.</p></div>
+  </div>
+  <p style="margin-top:14px" class="big">Honest framing</p>
+  <p>For this 24-hour POC we <b>hand-authored the Safco/Algolia recipe</b> together with the AI agents — a fast path for the known target. That is not the whole system; it is an example of what the workflow produces. The agents <i>discover and cache</i> such recipes, and as they meet more sites, coverage approaches “any site that permits automation.” The browser/MCP “vision” tier is the general (slower, costlier) solver we propose for the hardest cases.</p>
+  <div class="foot"><span>Frontier Dental — AI Take-Home POC</span><span>04 / 09</span></div>
+</section>
+
+<!-- 6. COMPLIANCE -->
+<section class="slide">
+  <div class="kicker">The right kind of engineering judgment</div>
+  <h2><span class="num">05</span>Honesty &amp; compliance</h2>
+  <p class="lead">We tested the tool against <b>Frontier Dental's own website</b>. The result is a feature, not a failure.</p>
+  <ul>
+    <li>The site is <b>Cloudflare bot-protected</b> — a classic Python scraper (and ours) gets <span class="warn">HTTP&nbsp;403</span> even with full browser headers.</li>
+    <li>Its <code>robots.txt</code> <b>disallows AI crawlers</b> (ClaudeBot, GPTBot, CCBot…) and signals <code>ai-train=no</code>.</li>
+    <li>So the tool <b>detects the block, refuses to evade it</b>, and escalates to a human — rather than circumventing access controls.</li>
+  </ul>
+  <div class="quote">“blocked: HTTP 403 (anti-bot / access denied) — refusing to evade. A real browser tier + site permission would be required.”<br><span style="color:#a8675e">— the tool's own dead-letter / human-handoff record</span></div>
+  <p style="margin-top:10px">Demonstrating that the system <b>respects access controls and asks for help</b> is exactly the production judgment the role calls for — far stronger than bypassing a potential employer's protections.</p>
+  <div class="foot"><span>Bypassing bot-protection was explicitly avoided</span><span>05 / 09</span></div>
+</section>
+
+<!-- 7. FINDINGS -->
+<section class="slide">
+  <div class="kicker">Evidence</div>
+  <h2><span class="num">06</span>Findings &amp; output</h2>
+  <table>
+    <tr><th>Target</th><th>Static sample</th><th>True catalog</th><th>How</th></tr>
+    <tr><td><b>Dental Exam Gloves</b></td><td>15 (curated)</td><td class="good">100 products</td><td>Site's Algolia API · matches the browser's 7 pages × ~15</td></tr>
+    <tr><td><b>Sutures &amp; surgical</b></td><td>15 (curated)</td><td class="good">56 products</td><td>Site's Algolia API · with variant SKUs captured</td></tr>
+    <tr><td>books.toscrape.com</td><td>—</td><td class="good">60 / 3 pages</td><td>Live any-site demo · CSS profile · real pagination · no JSON-LD</td></tr>
+    <tr><td>frontierdental.com</td><td>—</td><td class="warn">0 — blocked</td><td>Cloudflare 403 + AI-disallowed robots → compliance handoff</td></tr>
+  </table>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>156</h3><p>complete target products (with variants), normalized &amp; exported</p></div>
+    <div class="card"><h3>30</h3><p>automated tests passing (offline fixtures)</p></div>
+    <div class="card"><h3>JSON · CSV · XLSX · SQLite</h3><p>documented schema + per-run data-quality report</p></div>
+  </div>
+  <div class="foot"><span>Sample datasets committed in the repo</span><span>06 / 09</span></div>
+</section>
+
+<!-- 8. PRODUCTION -->
+<section class="slide">
+  <div class="kicker">Built to harden</div>
+  <h2><span class="num">07</span>Production-minded design</h2>
+  <p class="muted">Every item the brief asked for, mapped to a real mechanism:</p>
+  <div style="margin-top:6px">
+    <span class="pill">✓ Rate limiting + jitter</span>
+    <span class="pill">✓ Retries (backoff)</span>
+    <span class="pill">✓ Error isolation</span>
+    <span class="pill">✓ Resumable checkpointing</span>
+    <span class="pill">✓ Dead-letter queue</span>
+    <span class="pill">✓ Dedup on SKU</span>
+    <span class="pill">✓ Idempotent upsert</span>
+    <span class="pill">✓ Config-driven</span>
+    <span class="pill">✓ Secrets via .env</span>
+    <span class="pill">✓ Structured JSON logs</span>
+    <span class="pill">✓ Coverage / drift metrics</span>
+    <span class="pill">✓ robots.txt aware</span>
+    <span class="pill">✓ Anti-bot compliance</span>
+    <span class="pill">✓ Human-in-the-loop</span>
+    <span class="pill">✓ Dockerfile</span>
+    <span class="pill">✓ Deployment path</span>
+  </div>
+  <p class="big" style="margin-top:16px">Extraction escalation ladder</p>
+  <div class="ladder">
+    <div class="step"><b>Tier 1</b> · JSON-LD (deterministic, cheap)</div>
+    <div class="step"><b>Tier 2</b> · CSS rules (profile-driven)</div>
+    <div class="step"><b>Tier 3</b> · LLM extraction fallback (grounded)</div>
+    <div class="step"><b>Tier 4</b> · Observe-and-replay the site's data API</div>
+    <div class="step"><b>Tier 5</b> · Browser / MCP “vision” tier (slower, costlier)</div>
+    <div class="step human"><b>Final</b> · Human handoff — when blocked or uncertain, ask, don't guess or evade</div>
+  </div>
+  <div class="foot"><span>Frontier Dental — AI Take-Home POC</span><span>07 / 09</span></div>
+</section>
+
+<!-- 9. VISION -->
+<section class="slide">
+  <div class="kicker">From POC to product</div>
+  <h2><span class="num">08</span>Vision &amp; roadmap</h2>
+  <div class="grid">
+    <div class="card"><h3>Robustness</h3><p>Sitemap discovery; automatic browser/vision-tier escalation; distributed frontier + workers; profile versioning; scheduled re-crawls.</p></div>
+    <div class="card"><h3>Self-improving coverage</h3><p>The completeness-critic guarantees we never silently ship partial data. Each new site teaches the recipe cache → coverage trends toward “any site that permits it.”</p></div>
+  </div>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>Real-business integration</h3><p>Scheduled collection → data warehouse / BI; price-drop &amp; new-SKU &amp; out-of-stock alerts to Slack / email; the grounded reporter as a natural-language analytics layer.</p></div>
+    <div class="card"><h3>System integrations</h3><p>A small REST / MCP API so procurement, ERP, CRM and pricing engines can query the catalog or trigger a crawl; webhooks on catalog changes.</p></div>
+  </div>
+  <p style="margin-top:16px" class="lead"><b>The thesis:</b> deterministic speed for the easy 90%, AI for the hard 10%, a completeness-critic to know the difference, and a human as the honest final tier.</p>
+  <div class="foot"><span>Frontier Dental — AI Take-Home POC</span><span>08 / 09</span></div>
+</section>
+
+<!-- 10. CLOSING -->
+<section class="slide cover" style="background:linear-gradient(135deg,#0e7c86 0%,#0b5560 100%)">
+  <div class="kicker" style="color:#a9e7ec">In one line</div>
+  <h1 style="font-size:28pt">A working prototype that is honest about what it does,<br>and clear about how it becomes everything it could.</h1>
+  <div class="tag">
+    <span class="pill">Sound agentic architecture</span>
+    <span class="pill">AI where it adds value</span>
+    <span class="pill">Compliant by design</span>
+    <span class="pill">A real path to production</span>
+  </div>
+  <div class="meta">Deliverables: Git repo · README + User Manual · architecture &amp; schema docs · sample datasets · this deck.</div>
+</section>
+
+</body>
+</html>

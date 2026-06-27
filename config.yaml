@@ -25,6 +25,17 @@ crawl:
   # pagination on large sites.
   max_pages: 50
 
+# Catalog source. `html` = crawl the rendered listing pages (shows ~15 curated items
+# per Safco category). `algolia` = use the site's own public Algolia search API (the
+# complete catalog with true counts: ~495 gloves + ~415 sutures). Credentials are
+# auto-discovered from a category page; override here only if needed.
+source:
+  backend: "html"           # html | algolia
+  algolia:
+    category_root: "Dental Supplies"   # hierarchical facet root
+    category_level: 1                  # categories.level1
+    # app_id / api_key / index: auto-discovered from the seed page if omitted
+
 fetcher:
   backend: "httpx"          # httpx | playwright
   user_agent: "SafcoScraperPOC/0.1 (+contact: ai-team@frontierdental.example)"

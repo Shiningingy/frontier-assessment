@@ -111,7 +111,10 @@ class Orchestrator:
         for seed in (seeds if seeds is not None else self.settings.seeds):
             self.store.enqueue(seed.url, "category", seed.name)
 
-        await self._process_categories()
+        if self.settings.source_backend == "algolia":
+            await self._process_categories_algolia()
+        else:
+            await self._process_categories()
         if self.settings.follow_product_pages:
             await self._process_products()
 
@@ -280,6 +283,60 @@ class Orchestrator:
     def _page_cap_reached(self) -> bool:
         cap = self.settings.max_pages
         return cap is not None and self._pages_visited >= cap
+
+    async def _process_categories_algolia(self) -> None:
+        """Complete-catalog path: use Safco's own public Algolia API (the same source
+        the site uses) to pull every displayed product per category, with variants —
+        instead of the ~15-item curated HTML listing. Records are already structured,
+        so they flow straight into validate → store."""
+        from .tools.algolia import AlgoliaCatalog, AlgoliaConfig, discover_category_id, discover_config
+
+        scfg = self.settings.section("source").get("algolia", {}) or {}
+        cfg = None
+        if scfg.get("app_id") and scfg.get("api_key"):
+            cfg = AlgoliaConfig(scfg["app_id"], scfg["api_key"],
+                                scfg.get("index", "safco_prod_default_products_name_asc"))
+
+        for row in self.store.pending("category"):
+            url, source_category = row["url"], row["source_category"]
+            res = await self._fetch(url)
+            if res is None:
+                continue
+            page_cfg = cfg or discover_config(res.html)
+            category_id = scfg.get("category_id") or discover_category_id(res.html)
+            if page_cfg is None or category_id is None:
+                self._request_help(url, "could not discover Algolia config / category id",
+                                   "Provide source.algolia.app_id/api_key/category_id in config, "
+                                   "or check the page still embeds the Algolia search config.")
+                self.store.mark(url, "failed")
+                continue
+
+            catalog = AlgoliaCatalog(page_cfg, self.logger)
+            try:
+                count = 0
+                for raw in catalog.products(category_id, source_category=source_category,
+                                            max_items=self.settings.max_products):
+                    try:
+                        p = normalize_record(raw, source_category=source_category,
+                                             page_url=raw.get("product_url") or url,
+                                             extraction_tier="api")
+                    except ValidationError as exc:
+                        self.metrics.validation_failures += 1
+                        log_event(self.logger, "validate.fail", level=logging.WARNING, url=url, error=str(exc))
+                        continue
+                    self.metrics.record_coverage(p, record_coverage(p))
+                    self.store.upsert_product(p)
+                    self.metrics.products_stored += 1
+                    count += 1
+                self.metrics.products_found += count
+                self.store.mark(url, "done")
+                self.metrics.categories_done += 1
+                log_event(self.logger, "category.done.algolia", url=url,
+                          category_id=category_id, products=count)
+            except Exception as exc:
+                self.store.dead_letter(url, f"algolia error: {exc}", 1)
+                self.metrics.dead_letters += 1
+                log_event(self.logger, "algolia.error", level=logging.ERROR, url=url, error=str(exc))
 
     async def _process_products(self) -> None:
         pending = self.store.pending("product")

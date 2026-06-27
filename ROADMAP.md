@@ -19,6 +19,27 @@ tracks its evolution into a general, conversational, production-grade data tool.
 - **Anti-bot compliance**: detect 403/Cloudflare blocks and refuse to evade.
 - **Human-in-the-loop final tier**: queue an actionable human-help request when
   automation can't/shouldn't proceed, instead of failing silently or evading.
+- **Completeness-critic agent**: compares what we captured to the page's true total and
+  flags incompleteness (autonomously reports "15 of 100" on Safco). `safco check-completeness`.
+- **Complete-catalog source (expert recipe)**: Safco's own public Algolia API, used as a
+  hand-authored recipe → the full displayed catalog (Gloves 100 + Sutures 56 = 156 products
+  with variants). Honest framing: this is what the autonomous workflow below should *discover*.
+- **Autonomous API discovery (prototype)**: `browser_probe` captures the page's own data-API
+  call via a real browser (observe-and-replay) — proven to read the true `nbHits` with no
+  hardcoding.
+
+## Phase 1.5 — Close the autonomous-discovery loop (next)
+
+Turn the prototype into the full automated path, so an unseen API-driven site is handled
+without a human reverse-engineering it:
+- Completeness-critic detects a gap → **API-discovery agent** selects the captured product
+  API, infers pagination, and an LLM maps its JSON fields → our schema (grounded in the real
+  response).
+- **Cache the discovered recipe** like any profile (endpoint + payload + pagination + field
+  map); learned once, deterministic after.
+- Fall back to the **browser/MCP "vision" tier** when there's no clean API, and to **human
+  handoff** when blocked or uncertain. As the recipe cache grows across sites, coverage trends
+  toward "any site that permits automation."
 
 ## Phase 2 — Robustness & coverage
 

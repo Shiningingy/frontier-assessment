@@ -69,6 +69,10 @@ class Settings:
         return str(self.section("llm").get("backend", "null"))
 
     @property
+    def source_backend(self) -> str:
+        return str(self.section("source").get("backend", "html"))
+
+    @property
     def min_coverage(self) -> float:
         return float(self.section("extraction").get("min_coverage", 0.55))
 

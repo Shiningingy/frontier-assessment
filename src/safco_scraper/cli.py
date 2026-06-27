@@ -157,6 +157,30 @@ def _run_chat(args) -> int:
     return 0
 
 
+async def _run_check_completeness(args) -> int:
+    settings = load_settings(args.config)
+    logger = _logger_from(settings)
+    from .agents.completeness import CompletenessCritic
+    from .tools.extract import extract_with_profile
+    from .tools.profiles import ProfileStore, domain_of
+
+    fetcher = build_fetcher(settings, logger)
+    try:
+        res = await fetcher.fetch(args.url)
+    finally:
+        await fetcher.aclose()
+    profiles = ProfileStore("profiles")
+    profile = profiles.get(domain_of(args.url), "catalog-listing") or profiles.find_for_url(args.url)
+    extracted = len(extract_with_profile(res.html, profile, args.url).records) if profile else 0
+
+    critic = CompletenessCritic(settings, logger, use_browser=not args.no_browser)
+    # The browser probe uses Playwright's sync API, which can't run inside this
+    # asyncio loop — run the check in a worker thread.
+    verdict = await asyncio.to_thread(critic.check, args.url, extracted, res.html)
+    print(json.dumps(verdict.as_dict(), indent=2))
+    return 0 if verdict.complete else 1
+
+
 def _run_ui(args) -> int:
     settings = load_settings(args.config)
     logger = _logger_from(settings)
@@ -213,6 +237,12 @@ def main(argv: list[str] | None = None) -> int:
     p_chat = sub.add_parser("chat", help="conversational entry point — scrape any site / ask the catalog")
     p_chat.add_argument("message", nargs="?", help="one-shot message (omit for interactive chat)")
 
+    p_cc = sub.add_parser("check-completeness",
+                          help="did we get everything? compare extracted count vs the page's true total")
+    p_cc.add_argument("url", help="category URL to check")
+    p_cc.add_argument("--no-browser", action="store_true",
+                      help="skip the browser probe; use HTML signals only")
+
     p_ui = sub.add_parser("ui", help="launch the Gradio web UI (chat + catalog view)")
     p_ui.add_argument("--host", default="127.0.0.1")
     p_ui.add_argument("--port", type=int, default=7860)
@@ -232,6 +262,8 @@ def main(argv: list[str] | None = None) -> int:
         return _run_report(args)
     if args.command == "chat":
         return _run_chat(args)
+    if args.command == "check-completeness":
+        return asyncio.run(_run_check_completeness(args))
     if args.command == "ui":
         return _run_ui(args)
     parser.print_help()
