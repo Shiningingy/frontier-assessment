@@ -62,6 +62,12 @@ def build_demo(settings: Settings, logger: logging.Logger):
 
 def launch(settings: Settings, logger: logging.Logger, host: str = "127.0.0.1",
            port: int = 7860, share: bool = False) -> None:
+    # Silence a harmless third-party deprecation warning emitted from inside Gradio
+    # (gradio/routes.py uses Starlette's renamed HTTP_422_* constant). Not our code,
+    # no functional impact — just keeps the demo terminal clean.
+    import warnings
+    warnings.filterwarnings("ignore", message=r".*HTTP_422_UNPROCESSABLE_ENTITY.*")
+
     demo = build_demo(settings, logger)
     logger.info(f"Launching Gradio UI on http://{host}:{port}")
     demo.launch(server_name=host, server_port=port, share=share, inbrowser=True)
