@@ -27,3 +27,6 @@ logs/
 
 # Keep the take-home brief out of the submitted repo
 Take Home Test for AI team (final).pdf
+
+# OS / shell crash dumps
+*.stackdump
