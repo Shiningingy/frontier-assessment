@@ -158,8 +158,15 @@ fetcher/LLM backend, output formats, coverage thresholds.
 
 ## 5. Sample output
 
-`safco crawl` produces `data/products.{json,csv,xlsx}`, `data/run_summary.json`, and
-`data/runtime/safco.db` (30 products across both seed categories). One record:
+**The deliverable sample is [`data/safco_full/`](data/safco_full/)** — the *complete* catalog
+for the two target categories **together** (Gloves 100 + Sutures 56 = **156 products** with variant
+SKUs + descriptions), in JSON/CSV/XLSX. See [`data/README.md`](data/README.md) for what each file is.
+
+> Note: the `data/products.*` files at the `data/` root are a **side-product of the deterministic
+> no-key demo** (`safco crawl` → only the 15-item curated sample each category shows in static HTML),
+> kept to demonstrate the zero-setup path — **not** the final output.
+
+One record (shape; the deterministic demo run shown):
 
 ```json
 {

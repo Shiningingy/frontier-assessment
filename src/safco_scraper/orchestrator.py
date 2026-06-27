@@ -328,6 +328,10 @@ class Orchestrator:
                     self.store.upsert_product(p)
                     self.metrics.products_stored += 1
                     count += 1
+                    # Optionally enrich from the product detail page (description /
+                    # specs that the API index doesn't carry).
+                    if self.settings.follow_product_pages and p.product_url:
+                        self.store.enqueue(p.product_url, "product", source_category)
                 self.metrics.products_found += count
                 self.store.mark(url, "done")
                 self.metrics.categories_done += 1
