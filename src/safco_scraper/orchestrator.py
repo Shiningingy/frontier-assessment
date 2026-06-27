@@ -84,11 +84,13 @@ class Orchestrator:
         fetcher,
         logger: logging.Logger,
         llm_extractor: Optional[Any] = None,
+        profile_author: Optional[Any] = None,
     ) -> None:
         self.settings = settings
         self.fetcher = fetcher
         self.logger = logger
         self.llm_extractor = llm_extractor  # ExtractorAgent-like callable or None
+        self.profile_author = profile_author  # ProfileAuthorAgent or None (auto-author on miss)
         self.store = Store(settings.db_path)
         self.profiles = ProfileStore("profiles")
         self.metrics = RunMetrics()
@@ -96,10 +98,11 @@ class Orchestrator:
         self._revalidate_rate = float(settings.section("extraction").get("revalidation_sample_rate", 0.05))
 
     # ------------------------------------------------------------------ #
-    async def run(self, fresh: bool = False) -> RunMetrics:
+    async def run(self, seeds: Optional[list] = None, fresh: bool = False) -> RunMetrics:
         if fresh:
             self.store.reset_frontier()
-        for seed in self.settings.seeds:
+        # Runtime seeds (e.g. from the conductor / any-site chat) override config seeds.
+        for seed in (seeds if seeds is not None else self.settings.seeds):
             self.store.enqueue(seed.url, "category", seed.name)
 
         await self._process_categories()
@@ -125,13 +128,34 @@ class Orchestrator:
             return None
 
     def _profile_for(self, url: str, template: str) -> Optional[Profile]:
-        domain = domain_of(self.settings.site)
-        prof = self.profiles.get(domain, template)
+        # Look up by the page's OWN domain (enables multi-site), with a best-effort
+        # URL-glob match as a fallback for differently-named templates.
+        domain = domain_of(url)
+        prof = self.profiles.get(domain, template) or self.profiles.find_for_url(url)
         if prof:
             self.metrics.cache_hits += 1
         else:
             self.metrics.cache_misses += 1
         return prof
+
+    def _get_or_author_profile(self, url: str, template: str, html: str) -> Optional[Profile]:
+        """Cached profile if present; otherwise auto-author one for this unseen
+        template when a profile-author is wired (the any-site path)."""
+        prof = self._profile_for(url, template)
+        if prof is not None:
+            return prof
+        if self.profile_author is None:
+            log_event(self.logger, "profile.missing", level=logging.WARNING,
+                      url=url, template=template, hint="no cached profile and LLM/profile-author disabled")
+            return None
+        log_event(self.logger, "profile.auto_author", url=url, template=template)
+        try:
+            prof = self.profile_author.author(html, url, template=template)
+            self.metrics.llm_invocations += 1
+            return prof
+        except Exception as exc:
+            log_event(self.logger, "profile.auto_author_failed", level=logging.ERROR, url=url, error=str(exc))
+            return None
 
     def _check_signature(self, profile: Profile, signature: str, url: str) -> None:
         """Drift detection + cache touch. On drift, flag (and, with an LLM, the
@@ -156,9 +180,8 @@ class Orchestrator:
             if res is None:
                 continue
 
-            profile = self._profile_for(url, "catalog-listing")
+            profile = self._get_or_author_profile(url, "catalog-listing", res.html)
             if profile is None:
-                log_event(self.logger, "profile.missing", level=logging.ERROR, template="catalog-listing")
                 self.store.mark(url, "failed")
                 continue
 
@@ -196,7 +219,7 @@ class Orchestrator:
             res = await self._fetch(url)
             if res is None:
                 continue
-            profile = self._profile_for(url, "product-detail")
+            profile = self._get_or_author_profile(url, "product-detail", res.html)
             if profile is None:
                 self.store.mark(url, "done")
                 continue

@@ -118,6 +118,55 @@ async def _run_author_profile(args) -> int:
     return 0
 
 
+def _run_chat(args) -> int:
+    settings = load_settings(args.config)
+    logger = _logger_from(settings)
+    if settings.llm_backend == "null":
+        print("chat requires an LLM backend. Set llm.backend to 'anthropic' or 'claude_cli' in config.yaml.")
+        return 2
+    from .agents.conductor import ConductorAgent
+    from .llm.factory import build_llm_client
+
+    conductor = ConductorAgent(build_llm_client(settings, logger), settings, logger)
+    history: list = []
+    print("Conductor ready. Tell me what to scrape or ask about the catalog ('quit' to exit).\n")
+    if args.message:
+        final, _steps = conductor.run_turn(args.message, history)
+        print(final)
+        return 0
+    while True:
+        try:
+            msg = input("you> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+        if not msg:
+            continue
+        if msg.lower() in {"quit", "exit", "q"}:
+            break
+        final, steps = conductor.run_turn(msg, history)
+        for s in steps:
+            print(f"  {s}")
+        print("\n" + final + "\n")
+        history.append((msg, final))
+    return 0
+
+
+def _run_ui(args) -> int:
+    settings = load_settings(args.config)
+    logger = _logger_from(settings)
+    if settings.llm_backend == "null":
+        print("The UI chat requires an LLM backend. Set llm.backend to 'anthropic' or 'claude_cli' in config.yaml.")
+        return 2
+    try:
+        from .ui.app import launch
+    except ImportError:
+        print("Gradio not installed. Run: pip install -e .[ui]")
+        return 2
+    launch(settings, logger, host=args.host, port=args.port, share=args.share)
+    return 0
+
+
 def _run_report(args) -> int:
     settings = load_settings(args.config)
     logger = _logger_from(settings)
@@ -156,6 +205,14 @@ def main(argv: list[str] | None = None) -> int:
     p_report = sub.add_parser("report", help="interactive Q&A over the catalog")
     p_report.add_argument("question", nargs="?", help="one-shot question (omit for interactive REPL)")
 
+    p_chat = sub.add_parser("chat", help="conversational entry point — scrape any site / ask the catalog")
+    p_chat.add_argument("message", nargs="?", help="one-shot message (omit for interactive chat)")
+
+    p_ui = sub.add_parser("ui", help="launch the Gradio web UI (chat + catalog view)")
+    p_ui.add_argument("--host", default="127.0.0.1")
+    p_ui.add_argument("--port", type=int, default=7860)
+    p_ui.add_argument("--share", action="store_true", help="create a public Gradio share link")
+
     args = parser.parse_args(argv)
 
     if args.command == "crawl":
@@ -168,6 +225,10 @@ def main(argv: list[str] | None = None) -> int:
         return asyncio.run(_run_author_profile(args))
     if args.command == "report":
         return _run_report(args)
+    if args.command == "chat":
+        return _run_chat(args)
+    if args.command == "ui":
+        return _run_ui(args)
     parser.print_help()
     return 1
 

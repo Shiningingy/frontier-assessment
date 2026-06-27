@@ -26,14 +26,31 @@ class ClaudeCLIClient:
         self.default_model = default_model
         self.timeout = timeout
 
+    @staticmethod
+    def _alias(model: Optional[str]) -> str:
+        """The CLI takes short aliases; map full model ids (or None) to one."""
+        m = (model or "sonnet").lower()
+        if "haiku" in m:
+            return "haiku"
+        if "opus" in m:
+            return "opus"
+        if m in ("haiku", "opus", "sonnet"):
+            return m
+        return "sonnet"
+
     def complete(self, prompt: str, *, system: Optional[str] = None,
                  max_tokens: int = 2048, model: Optional[str] = None) -> LLMResponse:
-        model = model or self.default_model
+        model = self._alias(model or self.default_model)
         # The prompt is fed via STDIN so no user content (with $, &, quotes, etc.)
         # ever touches the command line — only safe flags do. System instructions
         # are prepended to the stdin prompt.
         full = prompt if not system else f"{system}\n\n---\n\n{prompt}"
-        args = [self.binary, "-p", "--output-format", "json", "--model", model]
+        # Disable Claude Code's own tools so `claude -p` behaves as a pure text
+        # completion endpoint (it must not try to act on the task itself or trigger
+        # permission prompts — our agents do the work).
+        disallowed = "Bash Edit Write Read Glob Grep WebFetch WebSearch Task NotebookEdit"
+        args = [self.binary, "-p", "--output-format", "json", "--model", model,
+                "--disallowedTools", disallowed]
         kwargs = dict(capture_output=True, text=True, timeout=self.timeout,
                       input=full, encoding="utf-8", errors="replace")
         if os.name == "nt":

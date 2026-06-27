@@ -30,7 +30,8 @@ TIER_ORDER = ["jsonld", "css", "regex", "attr", "llm"]
 
 
 def domain_of(url: str) -> str:
-    return (urlparse(url).netloc or url).lower().lstrip("www.")
+    host = (urlparse(url).netloc or url).lower()
+    return host[4:] if host.startswith("www.") else host
 
 
 # Page-chrome landmarks that are template-invariant (same across all pages of a

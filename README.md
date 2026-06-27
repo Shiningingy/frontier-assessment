@@ -64,6 +64,7 @@ schema in [docs/SCHEMA.md](docs/SCHEMA.md).
 
 | Agent | Responsibility | Where |
 |---|---|---|
+| **conductor** ⭐ | Conversational front door: natural language → tool calls (discover/ensure_profile/crawl/query/export) over **any** site | `agents/conductor.py` |
 | **orchestrator** | Sequence discover → extract → validate → store → export; checkpointing, retries, metrics | `orchestrator.py` |
 | **navigator** | Discover product URLs, subcategories, pagination from listing JSON-LD | `tools/navigate.py` |
 | **page-classifier** | Page type (rule-first; LLM only if ambiguous) | profile `match` + LLM |
@@ -107,6 +108,23 @@ safco author-profile https://www.safcodental.com/product/compac-nitrile   # writ
 safco report "which nitrile gloves are under $10? list name, sku, price"  # grounded Q&A
 safco report                     # interactive REPL (try: summary)
 ```
+
+**Conversational entry point + any-site (`safco chat` / `safco ui`).** The conductor
+agent is a natural-language front door that drives the whole workflow — and works on
+**any site**, not just Safco: given an unseen URL it auto-authors an extraction profile
+(one LLM pass), caches it, then crawls.
+
+```bash
+pip install -e .[ui]             # adds the Gradio web UI
+safco chat                       # terminal chat; e.g. "crawl gloves from safco and
+                                 #   tell me the cheapest nitrile glove"
+safco chat "summarize the catalog by brand"
+safco ui                         # browser chat + live catalog table (http://127.0.0.1:7860)
+```
+
+Any-site crawling and the chat need an LLM backend (`anthropic` or `claude_cli`); the
+plain `safco crawl` on cached sites still needs no key. See [ROADMAP.md](ROADMAP.md) for
+where this is heading (scheduled collection, change-alerts, REST/MCP API, BI integration).
 
 Optional **browser tier** for JS/anti-bot sites (not needed for Safco):
 `pip install -e .[browser] && playwright install chromium`, then
