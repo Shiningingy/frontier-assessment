@@ -69,7 +69,10 @@ def normalize_record(
     page_url: str = "",
     extraction_tier: str = "jsonld",
 ) -> Product:
-    base = raw.get("product_url") or page_url
+    # Resolve all relative URLs (product link, images, alternatives) against the page
+    # the record was found on — works whether product_url is absolute (JSON-LD) or a
+    # relative href (CSS extraction).
+    base = page_url or raw.get("product_url") or ""
 
     name = raw.get("name")
     if not name or not str(name).strip():

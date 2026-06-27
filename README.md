@@ -12,7 +12,9 @@ catalog Q&A).
 
 > 📖 **New here? Read the [User Manual](docs/MANUAL.md)** — install, the LLM
 > backend & login model, full command/config reference, chat & UI walkthrough, and
-> troubleshooting.
+> troubleshooting. See **[docs/DEMO.md](docs/DEMO.md)** for real run transcripts
+> (Safco, the books.toscrape any-site demo, and the Frontier compliance/handoff case)
+> and **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** for diagrams.
 
 ```
 $ safco crawl
@@ -160,8 +162,11 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
 
 ## 6. Limitations (current)
 
-- **Scope:** crawls the 2 seed categories; both happen to be single-page (15 items
-  each). Pagination is detected and handled generically but is untested at depth.
+- **Scope:** the 2 Safco seed categories are single-page (15 items each), and Safco's
+  pagination is JS-rendered (no static `?p=` links), so it isn't walked via httpx.
+  Pagination *following* is implemented and **demonstrated live on a multi-page,
+  non-JSON-LD site** (books.toscrape.com → 60 products across pages 1→3; see
+  [docs/DEMO.md](docs/DEMO.md)) and covered by tests.
 - **Specifications** appear in static HTML on only some product pages (~1/30); most
   Safco detail pages have no spec list. This is the real state of the source, and the
   motivating case for the LLM extraction fallback (infer specs from the description).
@@ -178,6 +183,14 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
   5xx (`fetcher/httpx_fetcher.py`).
 - **Per-URL isolation:** one bad page never stops the crawl; after retries it is
   written to the `dead_letter` table with the error and attempt count.
+- **Anti-bot detection (compliance):** a 403/anti-bot/Cloudflare response is recognised
+  and the page is **not** scraped or profiled — the system records *"blocked, refusing
+  to evade"* rather than attempting to bypass protection. (Verified live on a
+  Cloudflare-protected site → clean block, 0 evasion.)
+- **Human-in-the-loop final tier:** when automation can't or shouldn't proceed (blocked,
+  or no profile + no LLM, or auto-author failed), an actionable **human-help request** is
+  queued (`manual_help` table) and surfaced in `safco stats` / the conductor — never a
+  silent failure. See the escalation ladder in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - **Resumability / idempotency:** the SQLite `frontier` tracks each URL's status; a
   re-run replays only `pending` work and upserts on SKU, so re-runs never duplicate
   rows. (Verified: a resume run fetches 0 pages and the catalog stays at 30.)

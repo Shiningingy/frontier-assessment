@@ -253,7 +253,7 @@ class Orchestrator:
                 self.metrics.products_stored += 1
 
             # Discover detail pages + subcategories for the next stage.
-            disc = discover_listing(res.html, url)
+            disc = discover_listing(res.html, url, profile=profile)
             self.metrics.products_found += len(disc.product_urls)
             for purl in disc.product_urls:
                 self.store.enqueue(purl, "product", source_category)

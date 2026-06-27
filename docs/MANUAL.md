@@ -193,8 +193,16 @@ Or pre-author a profile explicitly:
 ```bash
 safco author-profile https://some-store.example/product/abc
 ```
-Best results on sites that expose schema.org JSON-LD. Pure-JS/anti-bot sites need the
-Playwright/vision tier (see Limitations / roadmap).
+Works on JSON-LD **and** plain-HTML sites: a profile can use CSS `item_selector` +
+`discovery` selectors so the generic extractor iterates product cards and follows
+pagination on sites with no structured data. (Worked example: a `books.toscrape.com`
+profile is bundled; crawling it walks pages 1→N and extracts 20 books/page via CSS.)
+
+**Blocked / anti-bot sites.** If a site returns a 403/Cloudflare challenge, the tool
+detects it, records *"blocked — refusing to evade,"* and queues a **human-help request**
+(see `safco stats`) rather than trying to bypass the protection. To proceed you must have
+permission and supply the page via an authorized browser / the Playwright tier — the tool
+will not evade bot-protection for you.
 
 ## 9. Output & where things live
 

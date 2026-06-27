@@ -1,5 +1,52 @@
 # Architecture
 
+## Diagrams
+
+**Extraction escalation ladder** — cheap & deterministic first, AI only where it pays,
+and a human as the final layer (never evade a block):
+
+```mermaid
+flowchart TD
+    A[Fetch page] --> B{Blocked?<br/>403 / anti-bot}
+    B -- yes --> H["🙋 Human handoff<br/>(refuse to evade)"]
+    B -- no --> C{Cached profile<br/>+ signature match?}
+    C -- "no / drift" --> P[profile-author<br/>LLM writes + caches profile]
+    C -- yes --> D
+    P --> D[Tier 1: JSON-LD]
+    D --> E{coverage ok?}
+    E -- yes --> Z[Validate → dedup → store]
+    E -- no --> F[Tier 2: CSS rules]
+    F --> G{coverage ok?}
+    G -- yes --> Z
+    G -- no --> L[Tier 3: LLM extraction<br/>grounded fallback]
+    L --> M{coverage ok?}
+    M -- yes --> Z
+    M -- no --> H
+    Z --> X[Export JSON/CSV/XLSX]
+```
+
+**Crawl pipeline** (deterministic core) — discovery loops over pagination:
+
+```mermaid
+flowchart LR
+    S[Seeds] --> N[Navigator<br/>discover products + pagination]
+    N --> E[Extractor<br/>profile-driven]
+    E --> V[Validator / Dedup]
+    V --> DB[(SQLite)]
+    DB --> Ex[Export]
+    N -. next page .-> N
+```
+
+**Conversational layer** — the conductor turns NL into grounded tool calls:
+
+```mermaid
+flowchart TD
+    U[User message] --> Co[Conductor]
+    Co -->|tool call| T["discover · ensure_profile · crawl<br/>query_catalog · summary · export"]
+    T -->|observation| Co
+    Co --> R[Grounded reply / human handoff]
+```
+
 ## Guiding principle: deterministic where possible, AI where it pays
 
 A live probe of Safco showed the catalog ships clean `schema.org` **JSON-LD in

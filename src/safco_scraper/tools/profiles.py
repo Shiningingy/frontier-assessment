@@ -99,6 +99,12 @@ class Profile:
     fields: dict[str, dict[str, Any]]
     cardinality: str = "one"  # "one" detail page | "many" listing page
     match: dict[str, Any] = field(default_factory=dict)
+    # For non-JSON-LD listing pages: CSS selector for each product container, so the
+    # generic extractor can iterate items and resolve css fields relative to each.
+    item_selector: Optional[str] = None
+    # Optional CSS-based discovery for sites without JSON-LD navigation:
+    #   {"product_link": "<css>", "next_page": "<css>"}
+    discovery: dict[str, str] = field(default_factory=dict)
     template_signature: Optional[str] = None
     last_validated: Optional[str] = None
     ttl_hours: int = 168
@@ -117,6 +123,8 @@ class Profile:
             "template": self.template,
             "cardinality": self.cardinality,
             "match": self.match,
+            "item_selector": self.item_selector,
+            "discovery": self.discovery,
             "fields": self.fields,
             "template_signature": self.template_signature,
             "last_validated": self.last_validated,

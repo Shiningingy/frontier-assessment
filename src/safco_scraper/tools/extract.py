@@ -202,14 +202,32 @@ def extract_with_profile(html: str, profile: Profile, url: str) -> ExtractionOut
     records: list[dict[str, Any]] = []
 
     if profile.cardinality == "many":
-        # Listing page: one record per Product node in the JSON-LD ItemList.
-        if not product_nodes:
-            notes.append("no Product nodes found for 'many' profile")
-        for node in product_nodes:
-            rec = {"product_url": url}
-            for fname, rule in profile.fields.items():
-                rec[fname] = _resolve_field(rule, node, soup, page_text)
-            records.append(rec)
+        if product_nodes:
+            # Listing page with JSON-LD: one record per Product node in the ItemList.
+            for node in product_nodes:
+                rec = {"product_url": url}
+                for fname, rule in profile.fields.items():
+                    rec[fname] = _resolve_field(rule, node, soup, page_text)
+                records.append(rec)
+        elif profile.item_selector:
+            # Non-JSON-LD listing: iterate CSS item containers, resolve css/regex
+            # fields RELATIVE TO EACH item (so the extractor stays site-agnostic).
+            items = soup.select(profile.item_selector)
+            if not items:
+                notes.append(f"item_selector '{profile.item_selector}' matched nothing")
+            for el in items:
+                rec = {"product_url": url}
+                item_text = el.get_text(" ", strip=True)
+                for fname, rule in profile.fields.items():
+                    src = rule.get("source", "css")
+                    if src in ("css", "attr"):
+                        rec[fname] = apply_css_rule(el, rule)
+                    elif src == "regex":
+                        rec[fname] = apply_regex_rule(item_text, rule)
+                    # jsonld fields are skipped on non-JSON-LD pages
+                records.append(rec)
+        else:
+            notes.append("no Product nodes and no item_selector for 'many' profile")
     else:
         # Detail page: a single record. jsonld fields read from the primary
         # Product node; css/regex fields read from the whole document.

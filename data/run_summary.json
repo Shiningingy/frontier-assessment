@@ -1,6 +1,6 @@
 {
-  "started_at": "2026-06-27T04:08:40.506645+00:00",
-  "finished_at": "2026-06-27T04:09:32.372180+00:00",
+  "started_at": "2026-06-27T04:31:57.448269+00:00",
+  "finished_at": "2026-06-27T04:32:54.666534+00:00",
   "pages_fetched": 33,
   "categories_done": 2,
   "products_found": 30,
@@ -13,6 +13,8 @@
   "cache_misses": 1,
   "llm_invocations": 0,
   "dead_letters": 0,
+  "blocked": 0,
+  "manual_help_requests": 1,
   "field_coverage": {
     "name": 1.0,
     "sku": 1.0,

@@ -13,6 +13,12 @@ tracks its evolution into a general, conversational, production-grade data tool.
   once (one LLM pass) then crawled deterministically thereafter.
 - **Gradio web UI** (`safco ui`): chat panel + live catalog table + summary.
 - Grounding enforced throughout: agents speak only from tool output / DB / fetched page.
+- **Pagination following** with a `max_pages` cap — demonstrated live on a multi-page,
+  non-JSON-LD site (books.toscrape) via CSS `item_selector` + profile-driven discovery,
+  proving the extractor is genuinely site-agnostic.
+- **Anti-bot compliance**: detect 403/Cloudflare blocks and refuse to evade.
+- **Human-in-the-loop final tier**: queue an actionable human-help request when
+  automation can't/shouldn't proceed, instead of failing silently or evading.
 
 ## Phase 2 — Robustness & coverage
 

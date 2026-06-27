@@ -29,10 +29,21 @@ def _dedup(seq):
     return out
 
 
-def discover_listing(html: str, url: str) -> DiscoveryResult:
+def discover_listing(html: str, url: str, profile=None) -> DiscoveryResult:
     soup = BeautifulSoup(html, "lxml")
     nodes = parse_jsonld(soup)
     result = DiscoveryResult()
+
+    # Profile-driven CSS discovery (for sites without JSON-LD navigation). Runs first
+    # so an authored/hand-written profile fully controls discovery on any site.
+    disc = getattr(profile, "discovery", None) if profile is not None else None
+    if disc:
+        for a in soup.select(disc.get("product_link", "")) if disc.get("product_link") else []:
+            if a.get("href"):
+                result.product_urls.append(urljoin(url, a["href"]))
+        for a in soup.select(disc.get("next_page", "")) if disc.get("next_page") else []:
+            if a.get("href"):
+                result.next_pages.append(urljoin(url, a["href"]))
 
     for node in nodes:
         if _is_type(node, "ItemList"):

@@ -1,0 +1,48 @@
+{
+  "site": "books.toscrape.com",
+  "template": "catalog-listing",
+  "cardinality": "many",
+  "match": {
+    "url_glob": "/catalogue/*"
+  },
+  "item_selector": "article.product_pod",
+  "discovery": {
+    "product_link": "h3 a",
+    "next_page": "li.next a"
+  },
+  "fields": {
+    "name": {
+      "source": "css",
+      "selector": "h3 a",
+      "attr": "@title"
+    },
+    "price": {
+      "source": "css",
+      "selector": "p.price_color"
+    },
+    "availability": {
+      "source": "css",
+      "selector": "p.availability"
+    },
+    "image_urls": {
+      "source": "css",
+      "selector": ".image_container img",
+      "attr": "@src"
+    },
+    "product_url": {
+      "source": "css",
+      "selector": "h3 a",
+      "attr": "@href"
+    }
+  },
+  "template_signature": "8964238c714d5b8b",
+  "last_validated": "2026-06-27T04:25:48.545240+00:00",
+  "ttl_hours": 168,
+  "field_confidence": {
+    "name": 1.0,
+    "price": 1.0,
+    "availability": 1.0
+  },
+  "version": 1,
+  "authored_by": "hand"
+}
