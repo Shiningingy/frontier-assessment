@@ -233,7 +233,10 @@
     <div class="card"><h3>Real-business integration</h3><p>Scheduled collection → data warehouse / BI; price-drop &amp; new-SKU &amp; out-of-stock alerts to Slack / email; the grounded reporter as a natural-language analytics layer.</p></div>
     <div class="card"><h3>System integrations</h3><p>A small REST / MCP API so procurement, ERP, CRM and pricing engines can query the catalog or trigger a crawl; webhooks on catalog changes.</p></div>
   </div>
-  <p style="margin-top:16px" class="lead"><b>The thesis:</b> deterministic speed for the easy 90%, AI for the hard 10%, a completeness-critic to know the difference, and a human as the honest final tier.</p>
+  <div class="grid" style="margin-top:14px">
+    <div class="card"><h3>Coordination at scale</h3><p>Today: a deterministic orchestrator for the known pipeline + an LLM conductor for open-ended calls + a completeness-critic for QA. Next: grow the conductor into a <b>budget-aware supervisor</b> (orchestrator-worker) that decomposes goals, dispatches workers, and re-plans on failure — an LLM manager only where decisions are <i>uncertain</i>, never just because there are many agents.</p></div>
+  </div>
+  <p style="margin-top:14px" class="lead"><b>The thesis:</b> deterministic speed for the easy 90%, AI for the hard 10%, a completeness-critic to know the difference, and a human as the honest final tier.</p>
   <div class="foot"><span>Frontier Dental — AI Take-Home POC</span><span>08 / 09</span></div>
 </section>
 

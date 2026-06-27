@@ -107,6 +107,24 @@ The same Python tools (`fetch`, `extract_with_profile`, `validate`, `store`,
 Each agent's role is also written as a `.claude/skills/<name>/SKILL.md` so the
 workflow is runnable inside Claude Code, not just as Python.
 
+## Coordination & management
+
+The agents don't run free — coordination already exists, split by the right criterion
+(*deterministic vs. uncertain decisions*) rather than crammed into one boss:
+
+| Role | Who | Type |
+|---|---|---|
+| Foreman — runs the known pipeline | `orchestrator.py` | **Deterministic** state machine: work queue (frontier), sequencing, retries, checkpointing, escalation, metrics |
+| Project lead — handles open-ended requests | `agents/conductor.py` | **LLM** planner/router (decides which tools/agents to call) |
+| QA — is the work complete? | `agents/completeness.py` | checks completeness, recommends escalation |
+
+**Principle:** use a deterministic orchestrator for the repeatable pipeline (cheaper, faster,
+can't hallucinate a plan); reach for an LLM manager *only* where decisions are genuinely
+uncertain. We do **not** add a "manager-of-managers" just because there are many agents — the
+number of workers doesn't justify an LLM boss, the uncertainty of the decisions does. At scale
+(parallel multi-site crawls, dynamic re-planning, cost budgets) the path is to grow the
+conductor into a budget-aware **supervisor** (orchestrator-worker pattern) — see ROADMAP.
+
 ## Grounding (anti-hallucination)
 
 Agents that read data, produce output, or view pages obey **only** what they

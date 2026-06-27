@@ -54,6 +54,14 @@ without a human reverse-engineering it:
   `SKIP LOCKED`) with N stateless workers and a per-domain distributed rate limiter.
 - **Data-quality dashboard**: ship `run_summary.json` metrics (coverage, drift,
   dead-letters) to Prometheus/Grafana with alerting on coverage deltas.
+- **Supervisor / orchestrator-worker coordination**: today coordination is split correctly
+  by uncertainty — a *deterministic* orchestrator runs the known pipeline, an *LLM* conductor
+  handles open-ended decisions, and the completeness-critic does QA. At scale (many sites in
+  parallel, each needing different escalation), promote the **conductor into a budget-aware
+  supervisor**: decompose goals → dispatch to worker agents → monitor completeness/cost →
+  **dynamically re-plan** on failure (API blocked → browser → human) and arbitrate when agents
+  disagree. Principle kept throughout: reach for an LLM manager only where decisions are
+  genuinely uncertain — never just because there are many agents.
 
 ## Phase 3 — Real-business integration (data collector / reporter)
 

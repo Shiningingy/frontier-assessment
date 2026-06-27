@@ -48,6 +48,14 @@ API-driven catalog.
   general (slower/costlier) solver. As agents meet more sites, coverage trends toward "any site that
   permits automation."
 
+## Coordination (do we need a "manager"?)
+
+We already have one, split by the right criterion: a **deterministic orchestrator** runs the
+known pipeline, an **LLM conductor** handles open-ended decisions, and the **completeness-critic**
+does QA. Principle: reach for an LLM manager only where decisions are genuinely uncertain — not
+because there are many agents. At scale the path is to grow the conductor into a budget-aware
+**supervisor** (orchestrator-worker) — see ROADMAP / docs/ARCHITECTURE.
+
 ## Status
 
 30 tests passing. Deliverables: README + docs (ARCHITECTURE/SCHEMA/PROFILES/MANUAL/DEMO/PROGRESS),
