@@ -87,15 +87,25 @@ $ safco report "which nitrile gloves are under $10? name, sku, price"
 ## 6. Web UI (Gradio)
 
 `safco ui` → http://127.0.0.1:7860. Two tabs:
-- **Chat** — the conductor; type a request (e.g. *"crawl gloves from safco and show me the
-  cheapest nitrile glove"*) and it drives discover → crawl → query, then answers from the data.
+- **Chat** — the conductor; ask about the catalog (*"which nitrile gloves are under $10?"*,
+  *"summarize the catalog by brand"*) or tell it to crawl a site. Every answer is grounded in
+  the database — it calls a tool and reports only what the rows say.
 - **Catalog** — the live product table + summary; click **Refresh** to load the current DB.
 
-> Run it locally to see it live (capture guide below). To embed screenshots, drop the files in
-> `docs/images/` and uncomment this block:
->
-> <!-- ![Chat tab](images/ui-chat.png) -->
-> <!-- ![Catalog tab](images/ui-catalog.png) -->
+![The conductor — landing screen](images/ui-home.png)
+
+> **The "30" is a demo default, not a system limit.** The catalog shown here is the
+> **no-key deterministic sample** (30 products). The DB is **not capped** — set
+> `source.backend: algolia` for the *complete* catalog (156 products for these two
+> categories), and in production the same UI and DB scale to the entire site. Same chat,
+> same tools, however many products are loaded.
+
+![Chat — grounded catalog Q&A](images/ui-chat.png)
+*"Which nitrile gloves are under $10?" → the conductor calls `query_catalog` and lists only
+the two matching rows (Halyard Black Nitrile $8.29, Compac Nitrile $8.49) — grounded, no guessing.*
+
+![Catalog tab — live product table + summary](images/ui-catalog.png)
+*The Catalog tab renders the current DB with a deterministic summary (counts, price range, brands).*
 
 ---
 
@@ -108,11 +118,12 @@ $ safco report "which nitrile gloves are under $10? name, sku, price"
    safco ui
    ```
 3. The browser opens at http://127.0.0.1:7860.
-   - **Chat tab**: type *"crawl gloves from safco and show me the cheapest nitrile glove"*,
-     wait for the answer, screenshot it.
+   - **Chat tab**: ask a single-step catalog question (fast + reliable) — e.g.
+     *"which nitrile gloves are under $10?"* or *"summarize the catalog by brand"* — and
+     screenshot the grounded answer. (Avoid the slow crawl-in-chat on the `claude_cli` backend.)
    - **Catalog tab**: click **Refresh**, screenshot the product table + summary.
-4. Save the images as `docs/images/ui-chat.png` and `docs/images/ui-catalog.png`
-   (create the `docs/images/` folder). They'll replace the placeholders above.
+4. Save the images as `docs/images/ui-chat.png` and `docs/images/ui-catalog.png`.
+   They'll render in the embeds above.
 5. For a short GIF, use [ScreenToGif](https://www.screentogif.com/) (Windows) or
    `Win+G` Game Bar to record a 10–15s clip of one chat → result, and save as
    `docs/images/demo.gif`.

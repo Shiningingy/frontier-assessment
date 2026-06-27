@@ -30,3 +30,7 @@ Take Home Test for AI team (final).pdf
 
 # OS / shell crash dumps
 *.stackdump
+
+# Screenshot inbox — drop raw UI screenshots here; the chosen ones get copied
+# into docs/images/ (tracked). This inbox itself is not committed.
+_screenshots_inbox/
