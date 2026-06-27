@@ -45,6 +45,11 @@ def _build_llm_extractor(settings, logger):
 
 async def _run_crawl(args) -> int:
     settings = load_settings(args.config)
+    # Per-run source override (no config edit needed). `--source algolia` populates the
+    # DB with the COMPLETE catalog (156) so chat/report/ui can be tested against it; this
+    # is the manual stand-in until per-domain source memory makes it automatic (ROADMAP).
+    if getattr(args, "source", None):
+        settings.raw.setdefault("source", {})["backend"] = args.source
     logger = _logger_from(settings)
     fetcher = build_fetcher(settings, logger)
     llm = _build_llm_extractor(settings, logger)
@@ -221,6 +226,9 @@ def main(argv: list[str] | None = None) -> int:
 
     p_crawl = sub.add_parser("crawl", help="run the deterministic crawl pipeline")
     p_crawl.add_argument("--fresh", action="store_true", help="reset the frontier and re-crawl from seeds")
+    p_crawl.add_argument("--source", choices=["html", "algolia"],
+                         help="override the data source for this run "
+                              "(algolia = complete catalog, e.g. 156 for the two Safco categories)")
 
     p_export = sub.add_parser("export", help="re-export current DB")
     p_export.add_argument("--format", choices=["json", "csv", "xlsx"], help="single format (default: all configured)")
