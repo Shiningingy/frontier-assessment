@@ -186,13 +186,17 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
 
 ## 6. Limitations (current)
 
-- **Scope / Safco pagination:** next-page detection is **param-agnostic** (handles
-  `rel=next`, `?p=`, `?page=`, `?x=`, `?start=`, path-based `page-2.html`, … and ignores
-  cross-domain links). But Safco serves the **same first 15 products in static HTML
-  regardless of `?page=`** — real pagination is done client-side in JS — so httpx can't
-  reach page 2; that needs the Playwright tier. Pagination following is **demonstrated
-  live on a multi-page, non-JSON-LD site** (books.toscrape.com → 60 products across
-  pages 1→3; see [docs/DEMO.md](docs/DEMO.md)) and covered by tests.
+- **Completeness — solved for the target; autonomous discovery is a prototype.** Safco shows
+  only ~15 curated items per category in static HTML (real pagination is client-side JS). We
+  obtain the **complete** catalog — Gloves **100** + Sutures **56** = **156 products with
+  variants** — via the site's own Algolia API (`source.backend: algolia`, see
+  [`data/safco_full/`](data/safco_full/)), and the **completeness-critic** autonomously detects
+  when a deterministic crawl is short ("15 of 100"). *The remaining limitation:* that Algolia
+  source is a **hand-authored recipe** for the known target; the fully-autonomous version
+  (browser observe-and-replay, `tools/browser_probe.py`) is a working **prototype**, not yet a
+  productionized generic path (see [ROADMAP.md](ROADMAP.md)). Param-agnostic next-page detection
+  (`rel=next`, `?p=`/`?page=`/`?x=`/…, path-based) is implemented and demonstrated live on
+  books.toscrape (60 products across pages 1→3).
 - **Specifications** appear in static HTML on only some product pages (~1/30); most
   Safco detail pages have no spec list. This is the real state of the source, and the
   motivating case for the LLM extraction fallback (infer specs from the description).
