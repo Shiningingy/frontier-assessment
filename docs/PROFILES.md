@@ -21,6 +21,22 @@ looks like. This is what lets one clean function serve many sites — each templ
 `cardinality: "many"` emits one record per JSON-LD `Product` (listing pages);
 `"one"` emits a single record (detail pages).
 
+### Non-JSON-LD listing sites (CSS)
+
+For sites with no JSON-LD, a profile can drive both extraction and discovery from CSS:
+
+```jsonc
+{
+  "cardinality": "many",
+  "item_selector": "article.product_pod",        // iterate each product card; css fields resolve relative to it
+  "discovery": { "product_link": "h3 a", "next_page": "li.next a" },
+  "fields": { "name": {"source":"css","selector":"h3 a","attr":"@title"}, ... }
+}
+```
+
+(Used by the bundled `books.toscrape.com` profile.) Beyond profiles, an **API recipe** source
+can supply already-structured records directly (e.g. `tools/algolia.py`, `extraction_tier: api`).
+
 ## Tier memory + self-validation
 
 Each profile records a `template_signature`, per-field `source` (the resolved tier),

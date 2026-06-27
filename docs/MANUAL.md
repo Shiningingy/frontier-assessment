@@ -117,6 +117,9 @@ All commands accept a global `--config <path>` (default `config.yaml`).
 | `safco chat [message]` | Conversational conductor — scrape any site / ask the catalog. No arg → interactive. | Yes |
 | `safco ui [--host --port --share]` | Launch the Gradio web UI (chat + catalog table). | Yes |
 | `safco author-profile <url> [--template]` | LLM-author + cache an extraction profile for a page's template. | Yes |
+| `safco check-completeness <url> [--no-browser]` | Completeness-critic: compare what was extracted vs the page's true total; flags "15 of 100". Uses the browser tier to read the true total. | No¹ |
+
+¹ Needs the browser extra (`pip install -e .[browser] && playwright install chromium`); no LLM key.
 
 Resumability: `safco crawl` (without `--fresh`) replays only `pending` frontier URLs and
 upserts on SKU, so re-runs never duplicate rows. Interrupt any crawl and re-run to resume.
@@ -130,10 +133,17 @@ Everything is config-driven — no code changes to retarget or retune. Key secti
 seeds:                      # category URLs to crawl
   - {name: "...", url: "https://..."}
 
+source:
+  backend: html              # html = static listing (~15 curated items per Safco category)
+                             # algolia = the site's own search API → COMPLETE catalog
+                             #           (Gloves 100 + Sutures 56 = 156 products w/ variants)
+
 crawl:
-  follow_product_pages: true   # also visit detail pages for specs/variants
+  follow_product_pages: true   # also visit detail pages for descriptions/specs/variants
   max_products: null           # cap detail fetches per run (null = no cap)
   follow_subcategories: false  # descend into discovered subcategories
+  follow_pagination: true      # follow next-page links (param-agnostic)
+  max_pages: 50                # safety cap on listing pages per crawl
 
 fetcher:
   backend: httpx               # httpx | playwright
@@ -239,10 +249,15 @@ deterministic path can't see products. Try `author-profile` (LLM) or the Playwri
 
 ## 11. Limitations
 
-- `specifications` appear in static HTML on only some product pages; `alternatives` are
-  JS-rendered (empty via httpx); `pack_size`/`variants` are partial — all reflect the
-  source, and are the motivating cases for the LLM-fallback / Playwright tiers.
-- Both Safco seed categories are single-page; pagination is handled generically but not
-  exercised at depth. Auto-discovery beyond a given category page (sitemaps) is roadmap.
+- **Completeness is solved for the target**: the complete catalog (Gloves 100 + Sutures 56 =
+  156 products with variants + descriptions) is obtained via `source.backend: algolia`, and the
+  completeness-critic flags a short deterministic crawl. The *remaining* limitation: that Algolia
+  source is a hand-authored recipe; the fully-autonomous discovery (`tools/browser_probe.py`) is a
+  prototype, not yet productionized (roadmap).
+- `specifications` appear on only a few product pages; `alternatives`/`pack_size` are JS-rendered /
+  not in the source — partial, and the motivating cases for the LLM-fallback / Playwright tiers.
+- Safco's pagination is client-side JS (static pages show ~15); param-agnostic pagination is
+  implemented and demonstrated live on books.toscrape (60 across 3 pages). Auto-discovery beyond a
+  given category page (sitemaps) is roadmap.
 - New sites consume LLM calls (one profile-author pass per unseen template), then cached.
 - The Gradio UI is single-user/local (inherits machine auth). See [../ROADMAP.md](../ROADMAP.md).

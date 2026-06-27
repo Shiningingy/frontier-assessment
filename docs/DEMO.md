@@ -6,13 +6,38 @@ guide at the bottom).
 
 ## 1. Deterministic crawl (no API key) — Safco, 2 categories
 
+The zero-setup path. Reads the static JSON-LD, which only exposes the ~15 curated items per
+category (this is the *side-product*, not the final catalog — see §2).
+
 ```text
 $ safco crawl --fresh
 ... 32 pages fetched, 30 products, 0 dead-letters, avg field-coverage 0.89
 Stored 30 products -> data/ (json/csv/xlsx) + data/runtime/safco.db
 ```
 
-## 2. Any-site + pagination (live, ethical) — books.toscrape.com
+## 2. Complete catalog + completeness-critic — Safco (the deliverable)
+
+The completeness-critic autonomously notices the deterministic crawl is short — by reading the
+page's own true total via the browser tier — with no hardcoded knowledge:
+
+```text
+$ safco check-completeness https://www.safcodental.com/catalog/gloves
+{ "extracted": 15, "expected": 100, "complete": false,
+  "method": "data-api:.../indexes/*/queries",
+  "recommended_action": "Incomplete: captured 15 of 100. Escalate — replay the discovered API ..." }
+```
+
+Then the complete-catalog source (the site's own Algolia API) pulls everything, with variants
+and detail-page descriptions. Output: [../data/safco_full/](../data/safco_full/).
+
+```text
+# config.yaml: source.backend = algolia ; crawl.follow_product_pages = true
+$ safco crawl --fresh
+stored: 156 | by category: {Dental Exam Gloves: 100, Sutures & surgical products: 56}
+coverage: name 100% sku 100% brand 99% price 100% description 100% variants 100%
+```
+
+## 3. Any-site + pagination (live, ethical) — books.toscrape.com
 
 A non-JSON-LD site, crawled with a CSS profile + pagination following. Proves the
 generic extractor is genuinely site-agnostic. Sample output: [../data/books_demo/](../data/books_demo/).
@@ -26,7 +51,7 @@ field_coverage: name 100%, price 100%, availability 100%, image_urls 100%
   ... (60 books across pages 1→2→3)
 ```
 
-## 3. Compliance — anti-bot site is detected, not evaded (frontierdental.com)
+## 4. Compliance — anti-bot site is detected, not evaded (frontierdental.com)
 
 Pointed at a Cloudflare-protected, AI-restricted site. The tool detects the block and
 **hands off to a human instead of evading** — the production-minded behaviour.
@@ -46,7 +71,7 @@ $ safco stats
         then supply the page HTML from an authorized browser. Do NOT bypass the protection.
 ```
 
-## 4. Grounded Q&A — conductor / reporter
+## 5. Grounded Q&A — conductor / reporter
 
 ```text
 $ safco chat "how many products and what's the price range? use the catalog summary"
@@ -59,7 +84,7 @@ $ safco report "which nitrile gloves are under $10? name, sku, price"
 2. Halyard Black Nitrile — DRCDL — $8.29
 ```
 
-## 5. Web UI (Gradio)
+## 6. Web UI (Gradio)
 
 `safco ui` → http://127.0.0.1:7860 — a Chat tab (the conductor) and a Catalog tab
 (live product table + summary).

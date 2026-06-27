@@ -96,12 +96,14 @@ The same Python tools (`fetch`, `extract_with_profile`, `validate`, `store`,
 
 | Agent | Responsibility | Built |
 |---|---|---|
+| conductor | Conversational front door: NL → tool calls over any site | `agents/conductor.py` ⭐ |
 | orchestrator | Sequence discover → extract → validate → store → export | `orchestrator.py` |
-| navigator | Discover product URLs / subcategories / pagination | `tools/navigate.py` |
+| navigator | Discover product URLs / subcategories / param-agnostic pagination | `tools/navigate.py` |
 | page-classifier | Page type (rule-first, LLM if ambiguous) | profile `match` + LLM |
 | profile-author | Write/repair + cache extraction profiles | `agents/profile_author.py` ⭐ |
-| extractor | Apply profile; LLM fallback + grounding guard | `tools/extract.py` + `agents/extractor.py` |
+| extractor | Apply profile (JSON-LD/CSS); LLM fallback + grounding guard | `tools/extract.py` + `agents/extractor.py` |
 | validator | Normalize, validate, dedup, coverage | `tools/validate.py` |
+| completeness-critic | "Did we get everything?" — extracted vs true total, escalate if short | `agents/completeness.py` ⭐ |
 | reporter | Grounded Q&A over the catalog | `agents/reporter.py` ⭐ |
 
 Each agent's role is also written as a `.claude/skills/<name>/SKILL.md` so the

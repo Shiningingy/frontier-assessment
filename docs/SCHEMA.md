@@ -25,7 +25,7 @@ before storage. Nested fields are JSON-encoded in CSV/Excel and native objects i
 | `rating` | number? | Aggregate rating value when present. |
 | `variants` | object[] | `{sku, pack_size, price, availability}` purchasable variations. |
 | `alternatives` | object[] | `{name, url, sku}` related/alternative products. |
-| `extraction_tier` | string | Provenance: `jsonld` \| `css` \| `regex` \| `llm` \| `mixed`. |
+| `extraction_tier` | string | Provenance: `jsonld` \| `css` \| `regex` \| `llm` \| `api` \| `mixed`. |
 | `scraped_at` | string | ISO-8601 UTC timestamp. |
 
 ## Storage layout (SQLite)

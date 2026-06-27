@@ -89,11 +89,12 @@ schema in [docs/SCHEMA.md](docs/SCHEMA.md).
 |---|---|---|
 | **conductor** ⭐ | Conversational front door: natural language → tool calls (discover/ensure_profile/crawl/query/export) over **any** site | `agents/conductor.py` |
 | **orchestrator** | Sequence discover → extract → validate → store → export; checkpointing, retries, metrics | `orchestrator.py` |
-| **navigator** | Discover product URLs, subcategories, pagination from listing JSON-LD | `tools/navigate.py` |
+| **navigator** | Discover product URLs, subcategories, param-agnostic pagination (JSON-LD or CSS) | `tools/navigate.py` |
 | **page-classifier** | Page type (rule-first; LLM only if ambiguous) | profile `match` + LLM |
 | **profile-author** ⭐ | Inspect an unseen template, write + **self-validate** + cache a profile; repair drift | `agents/profile_author.py` |
 | **extractor** | Apply cached profile; LLM fallback + grounding guard on low coverage | `tools/extract.py` + `agents/extractor.py` |
 | **validator/deduplicator** | Normalize, validate to schema, dedup on SKU, coverage scoring | `tools/validate.py` |
+| **completeness-critic** ⭐ | "Did we get everything?" — compares extracted vs the page's true total, escalates if short | `agents/completeness.py` |
 | **reporter** ⭐ | Grounded natural-language Q&A over the catalog | `agents/reporter.py` |
 
 Each role is also a `.claude/skills/<name>/SKILL.md`, so the workflow is runnable
@@ -118,6 +119,15 @@ safco crawl                      # use --fresh to reset the frontier and re-craw
 # 3. Inspect
 safco stats                      # catalog counts + last run summary
 cat data/products.json           # the normalized catalog
+```
+
+**Complete catalog (both target categories, no LLM key needed)** — use the site's own
+search API instead of the 15-item static sample:
+
+```bash
+# config.yaml: source.backend = algolia
+safco crawl --fresh              # -> 156 products (Gloves 100 + Sutures 56) with variants
+safco check-completeness https://www.safcodental.com/catalog/gloves   # "15 of 100" critic (uses the browser tier)
 ```
 
 Optional **AI tiers** — enable one backend in `config.yaml` (`llm.backend`):
@@ -197,9 +207,10 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
   productionized generic path (see [ROADMAP.md](ROADMAP.md)). Param-agnostic next-page detection
   (`rel=next`, `?p=`/`?page=`/`?x=`/…, path-based) is implemented and demonstrated live on
   books.toscrape (60 products across pages 1→3).
-- **Specifications** appear in static HTML on only some product pages (~1/30); most
-  Safco detail pages have no spec list. This is the real state of the source, and the
-  motivating case for the LLM extraction fallback (infer specs from the description).
+- **Specifications** appear in static HTML on only a few product pages (≈1 in the
+  156-product full set); most Safco detail pages have no spec list. This is the real state
+  of the source, and the motivating case for the LLM extraction fallback (infer specs from
+  the description) — descriptions themselves are now captured at 100%.
 - **Alternatives / related products** are JS-rendered (empty in static HTML), so they
   are not captured by the httpx path — a job for the Playwright tier.
 - **Reporter** loads the whole catalog into context (fine for a POC); at scale it
@@ -273,22 +284,26 @@ Full field reference: [docs/SCHEMA.md](docs/SCHEMA.md).
 src/safco_scraper/
   cli.py  config.py  orchestrator.py  models.py
   fetcher/   httpx_fetcher.py  playwright_fetcher.py  factory.py
-  tools/     fetch via fetcher, extract.py (generic), profiles.py (cache),
-             navigate.py, validate.py, store.py, export.py, query.py, pageview.py
-  agents/    extractor.py  profile_author.py  reporter.py
+  tools/     extract.py (generic), profiles.py (cache), navigate.py, validate.py,
+             store.py, export.py, query.py, pageview.py,
+             algolia.py (complete-catalog recipe), browser_probe.py (API discovery)
+  agents/    conductor.py  profile_author.py  extractor.py  validator (in tools),
+             reporter.py  completeness.py
   llm/       base.py  anthropic_client.py  claude_cli_client.py  null_client.py  prompts.py
+  ui/        app.py (Gradio chat + catalog)
   utils/     ratelimit.py  retry (tenacity)  robots.py  logging.py
 .claude/skills/<agent>/SKILL.md     # agent definitions (runnable in Claude Code)
-profiles/safcodental.com/*.json     # cached extraction profiles
+profiles/<domain>/*.json            # cached extraction profiles (safcodental.com, books.toscrape.com)
 tests/                              # offline tests against captured HTML fixtures
-docs/  config.yaml  Dockerfile
+docs/  config.yaml  Dockerfile  scripts/render_presentation.py
 ```
 
 ## Tests
 
 ```bash
-pip install -e .[dev] && pytest        # 13 offline tests, no network/LLM needed
+pip install -e .[dev] && pytest        # 30 offline tests, no network/LLM needed
 ```
 
-They exercise extraction on captured Safco HTML, normalization/coverage, the profile
-cache + signature stability, and the LLM grounding guard.
+They exercise extraction (JSON-LD + CSS) on captured Safco HTML, normalization/coverage,
+the profile cache + signature stability, param-agnostic pagination, the conductor's
+tool-routing, anti-bot/handoff, the completeness-critic, and the LLM grounding guard.
