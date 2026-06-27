@@ -10,6 +10,10 @@ itself; the LLM/agent tiers are optional and only kick in where they add value
 (authoring extraction rules for new templates, fallback on irregular pages, and
 catalog Q&A).
 
+> 📖 **New here? Read the [User Manual](docs/MANUAL.md)** — install, the LLM
+> backend & login model, full command/config reference, chat & UI walkthrough, and
+> troubleshooting.
+
 ```
 $ safco crawl
 ... 32 pages fetched, 30 products, avg field-coverage 0.89, 0 failures, 0 dead-letters
