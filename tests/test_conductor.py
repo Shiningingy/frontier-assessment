@@ -2,8 +2,10 @@
 in their output — driven here by a fake LLM with scripted responses (no network).
 """
 import logging
+import threading
 
 from safco_scraper.agents.conductor import ConductorAgent
+from safco_scraper.agents.reporter import ReporterAgent
 from safco_scraper.config import Settings
 from safco_scraper.llm.base import LLMResponse
 from safco_scraper.models import Product
@@ -65,6 +67,29 @@ def test_conductor_injects_configured_seed_urls(tmp_path):
     conductor = ConductorAgent(ScriptedLLM(["{}"]), settings, logging.getLogger("t"))
     assert "https://www.safcodental.com/catalog/gloves" in conductor.system
     assert "do not invent" in conductor.system.lower()
+
+
+def test_reporter_answer_works_across_threads(tmp_path):
+    # Regression: the reporter is built in one thread (e.g. with the conductor at UI
+    # startup) but answer() may run in a Gradio worker thread. SQLite is thread-bound,
+    # so a per-construction connection would raise "objects created in a thread...".
+    settings = _settings(tmp_path)
+    _seed_db(settings)
+    reporter = ReporterAgent(ScriptedLLM(["The cheapest is Compac Nitrile at $8.49."]),
+                             settings, logging.getLogger("t"))
+    result = {}
+
+    def run():
+        try:
+            result["answer"] = reporter.answer("cheapest nitrile?")
+        except Exception as exc:  # would be a sqlite ProgrammingError before the fix
+            result["error"] = repr(exc)
+
+    t = threading.Thread(target=run)
+    t.start()
+    t.join()
+    assert "error" not in result, result.get("error")
+    assert "8.49" in result["answer"]
 
 
 def test_conductor_handles_unknown_tool_gracefully(tmp_path):

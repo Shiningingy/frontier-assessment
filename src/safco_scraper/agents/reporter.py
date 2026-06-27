@@ -21,19 +21,26 @@ class ReporterAgent:
         self.client = client
         self.settings = settings
         self.logger = logger
-        self.store = Store(settings.db_path)
         self.model = settings.section("llm").get("classify_model") or settings.section("llm").get("extract_model")
 
     def answer(self, question: str) -> str:
-        n, catalog = catalog_json(self.store)
-        if n == 0:
-            return "The catalog is empty. Run `safco crawl` first."
-        prompt = REPORTER_USER.format(n=n, catalog=catalog, question=question)
-        resp = self.client.complete(prompt, system=REPORTER_SYSTEM, max_tokens=1024, model=self.model)
-        return resp.text.strip()
+        # Open the DB in the calling thread — SQLite connections are thread-bound, and
+        # this agent may be constructed once (e.g. the conductor) but called from a
+        # different worker thread (e.g. the Gradio UI).
+        store = Store(self.settings.db_path)
+        try:
+            n, catalog = catalog_json(store)
+            if n == 0:
+                return "The catalog is empty. Run `safco crawl` first."
+            prompt = REPORTER_USER.format(n=n, catalog=catalog, question=question)
+            resp = self.client.complete(prompt, system=REPORTER_SYSTEM, max_tokens=1024, model=self.model)
+            return resp.text.strip()
+        finally:
+            store.close()
 
     def repl(self) -> None:
-        n = self.store.product_count()
+        store = Store(self.settings.db_path)
+        n = store.product_count()
         print(f"Reporter ready — {n} products in the catalog. Ask a question (or 'summary', 'quit').\n")
         while True:
             try:
@@ -46,9 +53,10 @@ class ReporterAgent:
             if q.lower() in {"quit", "exit", "q"}:
                 break
             if q.lower() in {"summary", "stats"}:
-                print(json.dumps(deterministic_summary(self.store), indent=2))
+                print(json.dumps(deterministic_summary(store), indent=2))
                 continue
             try:
                 print("\n" + self.answer(q) + "\n")
             except Exception as exc:
                 print(f"[error] {exc}\n")
+        store.close()
